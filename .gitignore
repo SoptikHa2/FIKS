@@ -4,3 +4,8 @@
 # Do not index generated pdf and source code renamed to .txt (since FIKS doesn't accept .dart files)
 Sezona?/Kolo?/*/*.pdf
 Sezona?/Kolo?/*/*.txt
+
+# Do not index dart files
+.dart_tool
+.packages
+pubspec.lock
