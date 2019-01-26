@@ -1,0 +1,8 @@
+/home/petr/Programming/Dart/FIKS/Sezona5/Kolo1/Paska/obj/Debug/netcoreapp2.1/Paska.csprojAssemblyReference.cache
+/home/petr/Programming/Dart/FIKS/Sezona5/Kolo1/Paska/obj/Debug/netcoreapp2.1/Paska.csproj.CoreCompileInputs.cache
+/home/petr/Programming/Dart/FIKS/Sezona5/Kolo1/Paska/obj/Debug/netcoreapp2.1/Paska.AssemblyInfoInputs.cache
+/home/petr/Programming/Dart/FIKS/Sezona5/Kolo1/Paska/obj/Debug/netcoreapp2.1/Paska.AssemblyInfo.cs
+/home/petr/Programming/Dart/FIKS/Sezona5/Kolo1/Paska/bin/Debug/netcoreapp2.1/Paska.dll
+/home/petr/Programming/Dart/FIKS/Sezona5/Kolo1/Paska/bin/Debug/netcoreapp2.1/Paska.pdb
+/home/petr/Programming/Dart/FIKS/Sezona5/Kolo1/Paska/obj/Debug/netcoreapp2.1/Paska.dll
+/home/petr/Programming/Dart/FIKS/Sezona5/Kolo1/Paska/obj/Debug/netcoreapp2.1/Paska.pdb
