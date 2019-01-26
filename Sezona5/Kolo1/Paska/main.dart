@@ -15,9 +15,6 @@ main(List<String> args) {
   // strane reseni.
   // Potom pro kazdou stranu najdu nejvzdalenejsi prirazeny bod
   // a pridam ho do reseni (mezi body dane strany).
-  test();
-  benchmark();
-  exit(0);
 
   var input = List<Point>();
   int numberOfInputs = int.parse(stdin.readLineSync());
@@ -29,56 +26,6 @@ main(List<String> args) {
     }
   }
   print(solve(input).lengthBetweenPoints());
-
-  //test();
-}
-
-void test() {
-  assert(abs(solve([Point(0, 0), Point(0, 2), Point(2, 0), Point(2, 2)]).lengthBetweenPoints() - 8) <
-      0.01);
-  assert(abs(solve([
-            Point(-4, 3),
-            Point(-3, 1),
-            Point(-1, 1),
-            Point(0, 3),
-            Point(-2, 4),
-            Point(-1, 2),
-            Point(3, 2),
-            Point(6, 2),
-            Point(6, 6),
-            Point(2, 5),
-            Point(0, 4),
-            Point(0, 0),
-            Point(1, -2),
-            Point(1, 1)
-          ]).lengthBetweenPoints() -
-          28.12) <
-      0.01);
-}
-
-double benchmark() {
-  int testsCount = 5 * 1000;
-  int pointsPerTestMin = 1000;
-  int pointsPerTestMax = 1000 * 1000;
-  int pointsMax = 10 * 1000;
-
-  var rnd = Random();
-    var sw = Stopwatch();
-
-  for (var i = 0; i < testsCount; i++) {
-    int pointsInThisTest = rnd.nextInt(pointsPerTestMax-pointsPerTestMin)+pointsPerTestMin;
-    List<Point> input = List<Point>(pointsInThisTest);
-    for (var j = 0; j < pointsInThisTest; j++) {
-      double x = rnd.nextInt(pointsMax).toDouble();
-      double y = rnd.nextInt(pointsMax).toDouble();
-      input[j] = Point(x, y);
-    }
-    sw.start();
-    var solution = solve(input);
-    sw.stop();
-    print('$pointsInThisTest\t${sw.elapsedMilliseconds}');
-    sw.reset();
-  }
 }
 
 Result solve(List<Point> input) {
