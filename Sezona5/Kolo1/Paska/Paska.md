@@ -1,11 +1,12 @@
 # Páska
 
-*Poznámka: Řešení jsem napsal v [Dartu](https://www.dartlang.org/)*
-`$ dart Paska-Petr-Stastny.txt` 
+*Řešení jsem napsal v [Dartu](https://www.dartlang.org/).*
+
+`$ dart Paska-Petr-Stastny.txt`
 
 Nejdříve musím vybrat ze zadaných bodů takové, které se budou určitě nacházet ve výsledném mnohoúhelníku. Takové body se budou určitě nacházet na kraji, takže vyberu dva až čtyři body, které budou zastupovat extrémy - nejnižší, nejvyšší, nejvíc vpravo a nejvíc vlevo. Bylo by hezké kdyby se mi podařilo získat všechny čtyři body, ale stačí dva a nebude to dělat moc velký rozdíl - nevyplatí se se ujišťovat, že byla vybrána optimální varianta a že není náhodou možnost jak zvolit místo dvou bodů tři.
 
-Mezi těmito body natáhnu n-úhelník. Poté vymažu (případně ozančím jako "tohle nebudu zpracovávat") všechny body, které se nachází uvnitř daného n-úhelníka - to proto, že určitě nebude ve výsledku.
+Mezi těmito body natáhnu n-úhelník. Poté vymažu (případně ozančím jako "tohle nebudu zpracovávat") všechny body, které se nachází uvnitř daného n-úhelníka - to proto, že určitě nebudou ve výsledku.
 
 Poté vezmu všechny zbývající body, a přiřadím je k jedné ze stran n-úhelníka, a to k té nejbližší. Potom pro každou stranu vyberu jeden bod, který do ní zařadím, a to ten nejvzdálenější možný z přiřazených bodů.
 
