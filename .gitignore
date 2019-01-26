@@ -1,2 +1,6 @@
 .vscode
 .idea
+
+# Do not index generated pdf and source code renamed to .txt (since FIKS doesn't accept .dart files)
+Sezona?/Kolo?/*/*.pdf
+Sezona?/Kolo?/*/*.txt
