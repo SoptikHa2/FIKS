@@ -56,7 +56,7 @@ int getDaysInCurrentYear(Settings settings, int daysSinceDayZero, int year) {
   // days in previous years (doesn't matter if they are leap) +
   // leap days in previous years
   int previousDays = (year - 1) * settings.daysInYear +
-      ((year - 1) ~/ settings.leapYears -
+      (((year - 1) ~/ settings.leapYears) * settings.leapDaysPerYear -
               ((year - 1) ~/ (settings.leapYears * settings.notLeapYears))) *
           settings.leapDaysPerYear;
   return daysSinceDayZero - previousDays;
