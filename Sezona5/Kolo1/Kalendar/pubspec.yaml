@@ -1,0 +1,3 @@
+name: fiks_kalendar
+dependencies:
+  test: ^1.3.4

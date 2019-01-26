@@ -1,0 +1,24 @@
+# Unix datetime of start of the year
+461808000
+# Additional unix seconds per day
+86400
+
+Days since Day 0:
+({timestamp}-461808000)/86400 (floor)
+
+#######################
+
+Year: 15 months (350 days (+1))
+Leap year (not /100th): 3rd month has 22 days
+Months: [ 25, 21, 21, 24, 24, 25, 25, 21, 25, 24, 21, 24, 21, 24, 25]
+Week: 9 days
+
+#######################
+
+Week -> (days since day 0) % 9
+
+YearsNoLeap -> int((days since day 0) / 350) + 1
+TotalLeapDaysPerYears -> int(YearsNoLeap / 3) - int(YearsNoLeap / 100)
+TotalYears -> int((days since day 0 - TotalLeapDaysPerYears) / 350) + 1
+
+Month -> (! beware of leap year) just substract until hit low number
