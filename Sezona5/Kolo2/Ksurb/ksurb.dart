@@ -8,12 +8,14 @@ main(List<String> args) {
     var line = stdin.readLineSync().split(' ');
     int requiredResult = int.parse(line[0]);
     var numbers = line.skip(2).map((s) => int.parse(s)).toList();
-    if(numbers.length > 5){
+    bool canBeDone = false;
+    if (numbers.length > 6) {
       // There is no way we can do this in time
-      print('');
-      continue;
+      canBeDone = guess(numbers, requiredResult);
+    } else {
+      canBeDone = solve(numbers, requiredResult);
     }
-    var canBeDone = solve(numbers, requiredResult);
+
     if (canBeDone) {
       print('LZE');
     } else {
@@ -158,4 +160,19 @@ bool solve(List<int> numbers, int target) {
   }
 
   return solvedKeys.contains(targetKey);
+}
+
+bool guess(List<int> numbers, int target) {
+  // Veryify maximum
+  int maximumAddition = numbers.reduce((a, b) => a + b);
+  if (target > maximumAddition)
+    return false;
+  
+  // Verify parity
+  int numberOfOddNumbers = numbers.where((n) => n.isOdd).length;
+  if(numberOfOddNumbers.isEven != target.isEven){
+    return false;
+  }
+
+  return true;
 }
