@@ -46,7 +46,7 @@ while zbyvajiciPocetInverzi - inverzeZJedneSkupiny > 0:
 // dokud nebudeme splnovat podminku o delce retezce
 pridejDoRetezceDoleva("1" * (maximalniDelkaRetezce - delkaRetezce))
 
-// Dokud nebdue vyrovnany pocet inverzi, budeme inkrementovat
+// Dokud nebude vyrovnany pocet inverzi, budeme inkrementovat
 pozice = nejvicVlevo
 while zbyvajiciPocetInverzi > 0:
     if pocetDalsichSkupinVpravo + pocetNoveDoplnenychJednicekVpravo > pocetCiselVlevo:
@@ -57,7 +57,7 @@ while zbyvajiciPocetInverzi > 0:
 
 // Ted mame inkrementovany retezec
 if zbyvajiciPocetInverzi > 0:
-    // Ted uz neni moznost jak to opravit
+    // Ted uz neni moznost jak udelat dostatek inverzi
     return "neexistuje"
 
 // Hotovo!
@@ -66,7 +66,7 @@ return retezec
 
 ## Shrnutí
 
-Nejdříve udělám klasickou posloupnost 4321 4321 4321, abych se dostal co nejblíže nulovému počtu zbývajících inverzí.
+Nejdříve udělám klasickou posloupnost typu 4321 4321 4321. Zde se pokusím dostat na nulový počet zbývajících inverzí, nebo tak blízko jak je to jenom možné.
 
 Potom doplním zbytek čísel v délce řetězce něčím, co nemění počet inverzí - třeba jedničkou. Abych dosáhl délky 15 čísel, bylo by to 111 4321 4321 4321.
 
