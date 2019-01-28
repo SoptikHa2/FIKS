@@ -15,3 +15,8 @@ Obecne, celkovy pocet inverzi jde ziskat jako (1+..+pocet_skupin)*suma(1..(n-1))
 Tohle ale neni optimalni - z daneho poctu cisel jde ziskat vic inverzi.
 
 Postup pro tohle mam na papire
+
+
+!!! POZOR !!!
+
+Inkrementace muze zvysit inverze nad zadany pocet
