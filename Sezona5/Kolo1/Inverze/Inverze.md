@@ -2,7 +2,7 @@
 
 Nejjednodušší způsob, jak vytvořit řetězec čísel o požadovaném počtu inerzí, je prostě vytvořit řetězec, co obsahuje co nejvíce inverzí, a potom zleva doplňovat čísla abychom dosáhli požadované délky řetězce.
 
-Nejdříve tedy potřebujeme zjistit: s počtem N unikátních čísel a délkou M, kolik inverzí dokážeme vytvořit?
+Nejdříve tedy potřebujeme zjistit: kolik inverzí dokážeme vytvořit s počtem N unikátních čísel a délkou řetězce M?
 
 ## Maximální počet inverzí
 
@@ -41,26 +41,43 @@ while zbyvajiciPocetInverzi - inverzeZJedneSkupiny > 0:
     pridejDoRetezceDoleva(pocet_moznych_cisel .. 1)
 
 // Ted mame klasickou posloupnost
-// Dokud nebdue vyrovnany pocet inverzi, budeme inkrementovat
-pozice = nejvicVlevo + 1 // Druha pozice nejvic vlevo
-while zbyvajiciPocetInverzi > 0:
-    if pocetDalsichSkupinVpravo > pocetCiselVlevo:
-        inkrementujTohleCislo()
-        pozice += 1 // A jdi doprava
-
-// Ted mame inkrementovany retezec
-if zbyvajiciPocetInverzi > 0:
-    // Ted uz neni moznost jak to opravit
-    return "Nejde to."
 
 // Doplnime jednicky (coz je nejnizsi cislo v retezci, takze nezpusobuje dalsi inverze)
 // dokud nebudeme splnovat podminku o delce retezce
 pridejDoRetezceDoleva("1" * (maximalniDelkaRetezce - delkaRetezce))
 
+// Dokud nebdue vyrovnany pocet inverzi, budeme inkrementovat
+pozice = nejvicVlevo
+while zbyvajiciPocetInverzi > 0:
+    if pocetDalsichSkupinVpravo + pocetNoveDoplnenychJednicekVpravo > pocetCiselVlevo:
+        // pocetNoveDoplnenychJednicekVpravo je pocet cisel 1 doplnenych v minulem kroku
+        inkrementujTohleCislo()
+        if tohleCislo == maximalniCislo:
+            pozice += 1 // A jdi doprava
+
+// Ted mame inkrementovany retezec
+if zbyvajiciPocetInverzi > 0:
+    // Ted uz neni moznost jak to opravit
+    return "neexistuje"
+
 // Hotovo!
 return retezec
 ```
 
-## Proč to funguje
+## Shrnutí
+
+Nejdříve udělám klasickou posloupnost 4321 4321 4321, abych se dostal co nejblíže nulovému počtu zbývajících inverzí.
+
+Potom doplním zbytek čísel v délce řetězce něčím, co nemění počet inverzí - třeba jedničkou. Abych dosáhl délky 15 čísel, bylo by to 111 4321 4321 4321.
+
+Následně, pokud ještě mám přidávat další inverze, tak přidávám inkrementací - tedy zvyšuji čísla. Tím získávám inverze navíc.
+
+Pokud jsem inkrementoval maximálně (další inkrementace by počet inverzí snižovala), a pořád nějaké inverze potřebuji navíc - nejde to.
+
+Pokud jsem už ale všechny inverze vytvořil, můžu vrátit řetězec.
 
 ## Složitost
+
+Časovou složitost odhaduji na řádově lineární.
+
+Petr Šťastný
