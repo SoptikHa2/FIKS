@@ -46,10 +46,16 @@ class SegmentTree {
 
   void updateOnRange(int from, int to, int delta) {
     _changeTree(from, to, 0, _input.length - 1, 0, ((val) => val == null ? delta : val + delta));
+    for (var i = from; i < to; i++) {
+      _input[i] == null ? delta : _input[i] + delta;
+    }
   }
 
   void setOnRange(int from, int to, int value) {
     _changeTree(from, to, 0, _input.length - 1, 0, ((val) => value));
+    for (var i = from; i < to; i++) {
+      _input[i] = value;
+    }
   }
 
   void _changeTree(int from, int to, int low, int high, int pos,
