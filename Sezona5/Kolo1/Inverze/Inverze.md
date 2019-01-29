@@ -6,15 +6,17 @@ Nejdříve tedy potřebujeme zjistit: kolik inverzí dokážeme vytvořit s poč
 
 ## Maximální počet inverzí
 
+*Poznámka: `suma(x..y)` znamená součet všech čísel od `x` do `y` včetně, v krocích po 1. Například `suma(1..5) = 1+2+3+4+5`.*
+
 Pokud bychom vzali úplně ten nejjednodušší případ a pro N=4, M=12, udělali toto:
 
 `4321 4321 4321`
 
 Budeme mít celkem 36 inverzí.
 
-To můžeme spočítat jako `suma(1..pocet_skupin) * suma(1..(n-1))`, kde počet skupin je číslo, které udává kolikrát se opakuje řetězec 4321.
+To můžeme spočítat jako `suma(1..pocet_skupin) * suma(1..(n-1))`, kde počet skupin je číslo, které udává kolikrát se opakuje řetězec 4321. (Předpokládám, že nejnižší použité číslo je 1).
 
-Pokud nám po vytvoření skupin (4321) ještě několik pozic přebývá, můžeme zbývající počet inverzí později přičíst. Počet inverzí ve skupině na pozici a (počítáno zprava doleva) se počítá `a*(suma((min_cislo)..(max_cislo-1)))` - tedy u 321 4321 4321 spočítáme počet inverzí ve skupině 321 jako `3*(1+2)` - tedy 9. (Případně 432 by se spočítalo `a*suma(2..max_cislo-1)))`, tedy `3*(2+3)`, tedy 15.)
+Konkrétně pro určitou skupinu čísel spočítáme počet inverzí jako `a*(suma((min_cislo)..(max_cislo - 1)))`, kde a je pozice skupiny (zprava doleva). Například v řetězci 432 4321 4321 by byl počet inverzí, které jsou vygenerované skupinou 432, `3*suma(2..3) = 3*(2+3) = 3*5 = 15`.
 
 Počet inverzí v řetězci 4321 4321 4321 je tedy `(1+2+3) * (1+2+3) = 6*6 = 36`. 
 
@@ -26,7 +28,13 @@ V každé skupině totiž můžeme inkrementovat číslo (z `a` na `b`), díky �
 
 ## Algoritmus
 
-Obecně to uděláme následovně: Budeme tvořit řetězec s co nejvíce inverzemi. Jestliže přesáhneme při vytváření inverzí délku řetězce, a nedosáhli jsme počtu inverzí, nejde to. Jestliže skončíme s vytvářením inverzí a ještě musíme délku řetězce doplnit, prostě budeme doleva dopisovat nejnižší čísla (zde: 1), aby nevznikaly další inverze a přesto se délka řetězce zvětšovala.
+Obecně to uděláme následovně: Nejdříve vytvoříme co nejdelší řadu inverzí typu 4321 4321. Uděláme ji tak dlouhou, abychom nám zbývalo udělat co nejméně inverzí (ale v žádném případě se nesmí stát, že bych vytvořil víc inverzí než potřebujeme).
+
+Potom doplním řádu jedničkami (budu je přidávat doleva), abych dosáhl cílové délky řetězce (třeba 111 4321 4321).
+
+Následně budeme inkrementovat dokud nedosáhneme požadovaného počtu inverzí. Když se nám po inkrementaci nepodaří dosáhnout požadovaného počtu inverzí, výsledku nelze dosáhnout.
+
+Inkrementace probíhá tak, že postupujeme zleva doprava a hledáme číslo, které po inkrementaci přidá inverze - ale ne tolik, abychom měli víc inverzí než kolik potřebujeme. Jakmile takové číslo najdeme, tak ho zkoušíme inkrementovat. Inkrementace čísla zvýší jeho hodnotu o 1.
 
 ```
 velikostSkupiny = pocet_moznych_cisel
@@ -49,8 +57,10 @@ pridejDoRetezceDoleva("1" * (maximalniDelkaRetezce - delkaRetezce))
 // Dokud nebude vyrovnany pocet inverzi, budeme inkrementovat
 pozice = nejvicVlevo
 while zbyvajiciPocetInverzi > 0:
-    if pocetDalsichSkupinVpravo + pocetNoveDoplnenychJednicekVpravo > pocetCiselVlevo:
-        // pocetNoveDoplnenychJednicekVpravo je pocet cisel 1 doplnenych v minulem kroku
+    pocetInverziZiskanyToutoInkrementaci = pocetDalsichSkupinVpravo + pocetNoveDoplnenychJednicekVpravo - pocetCiselVlevo // pocetNoveDoplnenychJednicekVpravo je pocet cisel 1 doplnenych v minulem kroku
+    if pocetInverziZiskanyToutoInkrementaci > zbyvajiciPocetInverzi:
+        pozice += 1 // Kdyz bychom vytvorili vic inverzi nez kolik potrebujeme, jdi doprava
+    if pocetInverziZiskanyToutoInkrementace > 0:
         inkrementujTohleCislo()
         if tohleCislo == maximalniCislo:
             pozice += 1 // A jdi doprava
@@ -78,6 +88,6 @@ Pokud jsem už ale všechny inverze vytvořil, můžu vrátit řetězec.
 
 ## Složitost
 
-Časovou složitost odhaduji na řádově lineární.
+Časovou složitost odhaduji na řádově lineární. Oba dva cykly totiž nejsou vnořené a nebudou běžet déle než lineárně.
 
 Petr Šťastný

@@ -23,13 +23,11 @@ Teď je potřeba zjistit den v týdnu. Ten získáme počtem dní po dni nula (v
 
 ### Rok
 
-Zde trochu přeskakuji pořadí výstupu, ale tuto informaci budeme stejně potřebovat v dalších výpočtech.
-
-Rok v kalendáři Velkého Vůdce získáme následovně. Nejdříve si spočítáme počet dní za 3 roky (tedy přestupný cyklus) a za 300 let (přestupný cyklus včetně roku (rok%100), který nikdy není přestupný).
+Rok v kalendáři Velkého Vůdce získáme následovně. Nejdříve si spočítáme počet dní za 3 roky (tedy přestupný cyklus) a za 300 let (přestupný cyklus včetně roku dělitelného 100, který nikdy není přestupný).
 
 Nyní vezmeme počet dní od začátku kalendáře Velkého Vůdce, a zjistíme, kolikrát se opakuje 300-letý cyklus, poté kolikrát je ve zbylém počtu dní 3-letý cyklus a kolik normálních let. Rok 905 tedy bude mít 3 300-leté cykly (905 -> 005), jeden 3-letý cyklus (005 -> 002) a dva normální roky.
 
-Pomocí rozčlenění dní na jednotlivé skupiny můžeme zjistit celkový počet let od narození Velkého Vůdce.
+Teď můžeme zjistit rok tak, že vezmeme počet 300-leté cyklů, vynásobíme je 300. K tomu přičteme počet 3-letých cyklů vynásobených 3 a k tomu přičteme ještě počet let. Po několika kontrolách (například že den 0 roku 10 je ve skutečnosti poslední den roku 9) máme vypočítaný rok
 
 ### Den v roce
 
@@ -40,29 +38,28 @@ Toto číslo je počet dní v předchozích rocích (jako kdyby žádné nebyly 
 Počítám to následovně:
 
 
-.
+<br />
 
+<br />
 
-.
+<br >
 
 
 ```
 Počet dní, když žádné roky nejsou přestupné +
 Počet dní navíc v přestupných rocích, ignorujeme pravidlo kdy přestupné roky přestupné nejsou -
-Počet dní navíc v speciálně nepřestupných rocích (rok%100)
+Počet dní navíc v speciálně nepřestupných rocích (rok dělitelný 100 a zároveň dělitelný 3)
 ```
 
 ### Měsíc a den v měsíci
 
 Nejdřív zjistíme, jestli budeme používat normální počty dní v měsících, nebo speciální počty dní v měsících (během přestupného roku jsou některé měsíce delší).
 
-Následně použijeme cyklus (bohužel jsem nevymyslel způsob, který by cyklus nevyžadoval a myslím si, že takový způsob vůbec neexistuje). Prostě budeme iterovat přes měsíce a budeme počítat kolik dní v tomto roce ještě zbývá. Takto zjistíme rovnou dvě informace které potřebujeme - měsíc a počet dní v měsíci.
+Následně bude muset použít cyklus. Prostě budeme iterovat přes měsíce a budeme počítat kolik dní v tomto roce ještě zbývá. Takto zjistíme rovnou dvě informace které potřebujeme - měsíc a počet dní v měsíci.
 
 ## Složitost
 
 Jediný cyklus je iterování přes měsíce, zbytek programu je konstantní - časová složitost je tedy `O(m)` (m - počet měsíců).
-
-Paměťová složitost je konstantní.
 
 
 
