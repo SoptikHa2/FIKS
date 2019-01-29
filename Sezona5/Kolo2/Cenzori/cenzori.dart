@@ -12,6 +12,10 @@ main(List<String> args) {
     int inp_b = line[3];
     int inp_x = line[4];
 
+    stderr.writeln('#######################');
+    stderr.writeln('$i / $numberOfInputs');
+    stderr.writeln('#######################');
+
     var treeMin = SegmentTree(List.generate(inp_n, (_) => 0),
         ((a, b) => a == null ? b : (b == null ? a : (a < b ? a : b))));
     var treeMax = SegmentTree(List.generate(inp_n, (_) => 0),
@@ -22,6 +26,11 @@ main(List<String> args) {
     var resultsMax = List<int>();
     var resultsSum = List<int>();
     for (var i = 0; i < inp_t; i++) {
+      if(i % 1000 == 0){
+        stderr.writeln('$i / $inp_t');
+      }
+
+
       var realInput = generateInput(inp_n, inp_a, inp_b, inp_x);
       inp_x = realInput.x;
 
