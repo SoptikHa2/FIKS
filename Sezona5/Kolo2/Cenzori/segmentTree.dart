@@ -3,7 +3,10 @@ import 'dart:math';
 class SegmentTree {
   List<int> _input;
   List<int> _segmentTree;
-  SegmentTree(this._input) {
+  dynamic mergeFunction;
+
+  SegmentTree(this._input, int mergeFunction(int a, int b)) {
+    this.mergeFunction = mergeFunction;
     _segmentTree =
         List.generate(nextPowerOf2(_input.length) * 2 - 1, (i) => null);
     _constructTree(0, _input.length - 1, 0);
@@ -18,11 +21,11 @@ class SegmentTree {
     _constructTree(low, mid, 2 * pos + 1);
     _constructTree(mid + 1, high, 2 * pos + 2);
     _segmentTree[pos] =
-        min(_segmentTree[2 * pos + 1], _segmentTree[2 * pos + 2]);
+        mergeFunction(_segmentTree[2 * pos + 1], _segmentTree[2 * pos + 2]);
   }
 
-  int queryMinimum(int from, int to) {
-    return _queryMinimum(from, to, 0, _input.length - 1, 0);
+  int query(int from, int to) {
+    return _query(from, to, 0, _input.length - 1, 0);
   }
 
   /// From - queryFrom
@@ -30,7 +33,7 @@ class SegmentTree {
   /// Low - on the input array, from what index are we operating
   /// High - on the input array, to what index are we operating
   /// Pos - current node (in the array)
-  int _queryMinimum(int from, int to, int low, int high, int pos) {
+  int _query(int from, int to, int low, int high, int pos) {
     if (from <= low && to >= high) {
       // We have total overlap
       return _segmentTree[pos];
@@ -40,8 +43,8 @@ class SegmentTree {
       return null;
     }
     int mid = (low + high) ~/ 2;
-    return min(_queryMinimum(from, to, low, mid, 2 * pos + 1),
-        _queryMinimum(from, to, mid + 1, high, 2 * pos + 2));
+    return mergeFunction(_query(from, to, low, mid, 2 * pos + 1),
+        _query(from, to, mid + 1, high, 2 * pos + 2));
   }
 
   void updateOnRange(int from, int to, int delta) {
@@ -73,7 +76,7 @@ class SegmentTree {
     _changeTree(from, to, low, middle, 2 * pos + 1, changeFunction);
     _changeTree(from, to, middle + 1, high, 2 * pos + 2, changeFunction);
     _segmentTree[pos] =
-        min(_segmentTree[2 * pos + 1], _segmentTree[2 * pos + 2]);
+        mergeFunction(_segmentTree[2 * pos + 1], _segmentTree[2 * pos + 2]);
   }
 }
 
@@ -92,18 +95,4 @@ int nextPowerOf2(int number) {
     number = number & (number - 1);
   }
   return number << 1;
-}
-
-num min(num a, num b) {
-  if (a == null) {
-    return b;
-  }
-  if (b == null) {
-    return a;
-  }
-  if (a < b) {
-    return a;
-  } else {
-    return b;
-  }
 }

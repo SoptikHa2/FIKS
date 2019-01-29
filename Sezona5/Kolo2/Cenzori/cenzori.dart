@@ -2,65 +2,63 @@ import 'segmentTree.dart';
 import 'dart:io';
 
 main(List<String> args) {
-  //int numberOfInputs = int.parse(stdin.readLineSync());
-  int numberOfInputs = 1;
+  int numberOfInputs = int.parse(stdin.readLineSync());
   for (var i = 0; i < numberOfInputs; i++) {
-    // var line =
-    //     stdin.readLineSync().split(' ').map((s) => int.parse(s)).toList();
-    // int inp_t = line[0];
-    // int inp_n = line[1];
-    // int inp_a = line[2];
-    // int inp_b = line[3];
-    // int inp_x = line[4];
-    int inp_t = 3;
-    int inp_n = 3;
-    int inp_a = 4;
-    int inp_b = 5;
-    int inp_x = 5;
+    var line =
+        stdin.readLineSync().split(' ').map((s) => int.parse(s)).toList();
+    int inp_t = line[0];
+    int inp_n = line[1];
+    int inp_a = line[2];
+    int inp_b = line[3];
+    int inp_x = line[4];
 
-    var tree = SegmentTree(List.generate(inp_n, (_) => 0));
-    var results = List<int>();
+    var treeMin = SegmentTree(List.generate(inp_n, (_) => 0),
+        ((a, b) => a == null ? b : (b == null ? a : (a < b ? a : b))));
+    var treeMax = SegmentTree(List.generate(inp_n, (_) => 0),
+        ((a, b) => a == null ? b : (b == null ? a : (a > b ? a : b))));
+    var treeSum = SegmentTree(List.generate(inp_n, (_) => 0),
+        ((a, b) => a == null ? b : (b == null ? a : a + b)));
+    var resultsMin = List<int>();
+    var resultsMax = List<int>();
+    var resultsSum = List<int>();
     for (var i = 0; i < inp_t; i++) {
       var realInput = generateInput(inp_n, inp_a, inp_b, inp_x);
       inp_x = realInput.x;
 
       switch (realInput.t) {
         case 0:
-          results.add(tree.queryMinimum(realInput.b, realInput.e));
+          resultsMin.add(treeMin.query(realInput.b, realInput.e));
+          resultsMax.add(treeMax.query(realInput.b, realInput.e));
+          resultsSum.add(treeSum.query(realInput.b, realInput.e));
           break;
         case 1:
-          tree.updateOnRange(realInput.b, realInput.e, realInput.a);
+          treeMin.updateOnRange(realInput.b, realInput.e, realInput.a);
+          treeMax.updateOnRange(realInput.b, realInput.e, realInput.a);
+          treeSum.updateOnRange(realInput.b, realInput.e, realInput.a);
           break;
         case 2:
-          tree.setOnRange(realInput.b, realInput.e, realInput.a);
+          treeMin.setOnRange(realInput.b, realInput.e, realInput.a);
+          treeMax.setOnRange(realInput.b, realInput.e, realInput.a);
+          treeSum.setOnRange(realInput.b, realInput.e, realInput.a);
           break;
       }
     }
 
-    int currentMinXor = 0;
-    int currentMaxXor = 0;
-    int currentMin = 999999999999999999;
-    int currentMax = -99999999999999999;
-    int sum = 0;
-    for (var number in results) {
-      sum ^= number;
-      if (number < currentMin) {
-        currentMin = number;
-        currentMinXor = 0;
-      } else {
-        currentMinXor ^= number;
-      }
-      if (number > currentMax) {
-        currentMax = number;
-        currentMaxXor = 0;
-      } else {
-        currentMaxXor ^= number;
-      }
+    int minXor = 0;
+    int maxXor = 0;
+    int sumXor = 0;
+    for (var number in resultsMin) {
+      minXor ^= number;
     }
-    print(results);
-    print(currentMinXor);
-    print(currentMaxXor);
-    print(sum);
+    for (var number in resultsMax) {
+      maxXor ^= number;
+    }
+    for (var number in resultsSum) {
+      sumXor ^= number;
+    }
+    print(minXor);
+    print(maxXor);
+    print(sumXor);
   }
 }
 
