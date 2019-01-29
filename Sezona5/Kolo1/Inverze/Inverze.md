@@ -57,7 +57,7 @@ pridejDoRetezceDoleva("1" * (maximalniDelkaRetezce - delkaRetezce))
 // Dokud nebude vyrovnany pocet inverzi, budeme inkrementovat
 pozice = nejvicVlevo
 while zbyvajiciPocetInverzi > 0:
-    pocetInverziZiskanyToutoInkrementaci = pocetDalsichSkupinVpravo + pocetNoveDoplnenychJednicekVpravo - pocetCiselVlevo // pocetNoveDoplnenychJednicekVpravo je pocet cisel 1 doplnenych v minulem kroku
+    pocetInverziZiskanyToutoInkrementaci = pocetDalsichSkupinVpravo + pocetNoveDoplnenychJednicekVpravo - pocetVetsichCiselVlevo // pocetNoveDoplnenychJednicekVpravo je pocet cisel 1 doplnenych v minulem kroku
     if pocetInverziZiskanyToutoInkrementaci > zbyvajiciPocetInverzi:
         pozice += 1 // Kdyz bychom vytvorili vic inverzi nez kolik potrebujeme, jdi doprava
     if pocetInverziZiskanyToutoInkrementace > 0:
