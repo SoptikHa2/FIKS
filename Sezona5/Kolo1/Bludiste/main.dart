@@ -51,6 +51,7 @@ void forceSolveAndCompare(int n, int m, int required){
 }
 
 List<List<dynamic>> createLongestPath(int m, int n, int targetLength) {
+  // 2D pole
   var array = List.generate(m, (_) => List.generate(n, (_) => 0));
   int x = 0, y = 0;
   int remainingTargetLength = targetLength - (m+n-1);
