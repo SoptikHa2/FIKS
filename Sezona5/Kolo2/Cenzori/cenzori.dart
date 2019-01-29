@@ -1,5 +1,9 @@
+import 'segmentTree.dart';
 
-
+main(List<String> args) {
+  var tree = SegmentTree([2, 1, 2, 3, 0]);
+  print(tree.rangeMinimumQuery(0, 3));
+}
 
 
 Input generateInput(int t, int n, int a, int b, int x0) {
