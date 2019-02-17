@@ -1,4 +1,5 @@
-import 'segmentTree.dart';
+//import 'segmentTree.dart';
+import '/home/petr/Programming/Dart/Libraries/SegmentTree/lib/segmentTreeWithNodes.dart';
 import 'dart:io';
 
 main(List<String> args) {
@@ -16,39 +17,35 @@ main(List<String> args) {
     stderr.writeln('$i / $numberOfInputs');
     stderr.writeln('#######################');
 
-    var treeMin = SegmentTree(List.generate(inp_n, (_) => 0),
-        ((a, b) => a == null ? b : (b == null ? a : (a < b ? a : b))));
-    var treeMax = SegmentTree(List.generate(inp_n, (_) => 0),
-        ((a, b) => a == null ? b : (b == null ? a : (a > b ? a : b))));
-    var treeSum = SegmentTree(List.generate(inp_n, (_) => 0),
-        ((a, b) => a == null ? b : (b == null ? a : a + b)));
+    var treeMin = SegmentTree.min(List.generate(inp_n, (_) => 0));
+    var treeMax = SegmentTree.max(List.generate(inp_n, (_) => 0));
+    var treeSum = SegmentTree.sum(List.generate(inp_n, (_) => 0));
     var resultsMin = List<int>();
     var resultsMax = List<int>();
     var resultsSum = List<int>();
     for (var i = 0; i < inp_t; i++) {
-      if(i % 1000 == 0){
+      if (i % 1000 == 0) {
         stderr.writeln('$i / $inp_t');
       }
-
 
       var realInput = generateInput(inp_n, inp_a, inp_b, inp_x);
       inp_x = realInput.x;
 
       switch (realInput.t) {
         case 0:
-          resultsMin.add(treeMin.query(realInput.b, realInput.e));
-          resultsMax.add(treeMax.query(realInput.b, realInput.e));
-          resultsSum.add(treeSum.query(realInput.b, realInput.e));
+          resultsMin.add(treeMin.queryOnInterval(realInput.b, realInput.e));
+          resultsMax.add(treeMax.queryOnInterval(realInput.b, realInput.e));
+          resultsSum.add(treeSum.queryOnInterval(realInput.b, realInput.e));
           break;
         case 1:
-          treeMin.updateOnRange(realInput.b, realInput.e, realInput.a);
-          treeMax.updateOnRange(realInput.b, realInput.e, realInput.a);
-          treeSum.updateOnRange(realInput.b, realInput.e, realInput.a);
+          treeMin.addOnIntervalLazy(realInput.b, realInput.e, realInput.a);
+          treeMax.addOnIntervalLazy(realInput.b, realInput.e, realInput.a);
+          treeSum.addOnIntervalLazy(realInput.b, realInput.e, realInput.a);
           break;
         case 2:
-          treeMin.setOnRange(realInput.b, realInput.e, realInput.a);
-          treeMax.setOnRange(realInput.b, realInput.e, realInput.a);
-          treeSum.setOnRange(realInput.b, realInput.e, realInput.a);
+          treeMin.setOnIntervalLazy(realInput.b, realInput.e, realInput.a);
+          treeMax.setOnIntervalLazy(realInput.b, realInput.e, realInput.a);
+          treeSum.setOnIntervalLazy(realInput.b, realInput.e, realInput.a);
           break;
       }
     }
