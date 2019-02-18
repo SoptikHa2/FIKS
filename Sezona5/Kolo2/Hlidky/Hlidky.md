@@ -33,8 +33,8 @@ loop:
 
 V podstatě to tedy funguje takto. Cestujeme z vrcholu A, a to vždy po nejkratší možné cestě (tedy s nejmenším počtem hlídek). Takto postupujeme dokud nedorazíme do vrcholu B. Jelikož jsme celou dobu chodili po těch nejkratších možných cestách, určitě je maximum těchto vzdáleností minimální - tedy máme cestu, kde maximální počet hlídek mezi městy je co nejmenší.
 
-Časová složitost může být až řádově `O(n)` - `n` je počet cest (při volbě vhodně kolekce, která dovoluje hledání minima (a ideálně i vkládání) v O(1) - například Fibonacciho halda).
+Časová složitost může být až řádově `O(n)` - `n` je počet cest (při volbě vhodné kolekce, která dovoluje hledání minima (a ideálně i vkládání) v O(1) - například Fibonacciho halda).
 
-Moje implementace používá binární haldu, takže složitost by měla být řádově `O(n*log(m)*log(n))` (m - počet měst) kvůli logaritmické časové složitosti při budování haldy.
+Moje implementace nepoužívá haldu - nechtěl jsem přidávat knihovny třetích stran, které by se musely dodatečně stahovat a ani jsem nechtěl zbytečně haldu sám implementovat, protože to není základ algoritmu a jenom bych zbytečně snižoval čitelnost. Moje implementace má tedy řádově složitost `O(m*n)` (počet měst, počet cest), i když by teoreticky mohla být podstatně nižší.
 
 Petr Šťastný
