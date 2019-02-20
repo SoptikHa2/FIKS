@@ -7,14 +7,14 @@ main(List<String> args) {
 
   // Input
   var line = stdin.readLineSync().split(' ').map((s) => int.parse(s)).toList();
-  int n = line[0]; // Pocet mest
-  int k = line[1]; // Pocet cest
+  int n = line[0]; // Number of cities
+  int k = line[1]; // Number of paths  between cities
 
   var input = Region(n);
 
   for (var i = 0; i < k; i++) {
     line = stdin.readLineSync().split(' ').map((s) => int.parse(s)).toList();
-    // Pocet hlidek `h` mezi mesty `a` a `b`
+    // Number of control points `h` between city `a` and city `b`
     int a = line[0];
     int b = line[1];
     int h = line[2];
@@ -116,8 +116,7 @@ class Region {
         // Return to another city, if exists and
         // discard this path
         currentPath.cities.last.shortestAvailablePath = double.infinity;
-        currentPath =
-            _getResultWhereLastCityHasSmallestAvailableDistancePath(savedPaths);
+        currentPath = _backtrackToShortestPossiblePath(savedPaths);
         if (currentPath == null) {
           // No solution exists
           return null;
@@ -126,8 +125,7 @@ class Region {
       }
 
       // Get shortest available distance of any available paths
-      var shortestPath =
-          _getResultWhereLastCityHasSmallestAvailableDistancePath(savedPaths);
+      var shortestPath = _backtrackToShortestPossiblePath(savedPaths);
       if (shortestPath == null ||
           shortestPath.cities.last.shortestAvailablePath >=
               selectedPath.distance) {
@@ -154,8 +152,7 @@ class Region {
     }
   }
 
-  Result _getResultWhereLastCityHasSmallestAvailableDistancePath(
-      List<Result> results) {
+  Result _backtrackToShortestPossiblePath(List<Result> results) {
     double min = double.infinity;
     Result res = null;
 
@@ -193,7 +190,7 @@ class Path {
   City from;
   City to;
 
-  /// Distance, or number of controls
+  /// Length, or number of control points
   double distance;
 
   Path(this.from, this.to, this.distance);
@@ -205,7 +202,7 @@ class City {
 
   /// null - City was not visited yet
   ///
-  /// \d - length shortest unvisited path (from this city)
+  /// \d - length of shortest unvisited path (from this city)
   ///
   /// infinity - city has no more unvisited paths
   double shortestAvailablePath = null;
@@ -220,7 +217,8 @@ class City {
   }
 }
 
-/// Result path
+/// This structure contains cities in path.
+/// It is used to easily backtrack to older paths
 class Result {
   List<City> cities;
   double currentMaximumPath = double.negativeInfinity;
@@ -262,5 +260,78 @@ class Log {
     if (Log.enabled) {
       stderr.writeln(o);
     }
+  }
+}
+
+/// # Minimum pairing heap.
+/// https://en.wikipedia.org/wiki/Pairing_heap
+/// https://brilliant.org/wiki/pairing-heap/
+///
+/// Find min: `O(1)`
+/// Insert: `O(1)`
+/// Merge: `O(1)`
+/// Remove min: `O(log(n))`
+///
+/// ## Structure
+/// Tree, where all nodes contain
+/// pointer to left child and
+/// siblings.
+class PairingMinHeap {
+  HeapNode root;
+
+  PairingMinHeap(this.root);
+
+  PairingMinHeap.fromHeap(PairingMinHeap first, PairingMinHeap second) {
+    this.root = first.root;
+    this.root.leftChild = second.root;
+  }
+
+  /// Return root, it's always the minimum
+  HeapNode findMin() {
+    return root;
+  }
+
+  /// Remove root, then merge all subheaps
+  void deleteMin() {
+    // Subheaps: root's left child and all left child's siblings
+    var subheaps = [root.leftChild]..addAll(root.leftChild.siblings);
+    this.root =
+        subheaps.reduce((first, second) => PairingMinHeap.merge(first, second));
+  }
+
+  /// Merge the node with rest of the heap
+  void insert(double value) {
+    this.root = merge(this.root, HeapNode(value));
+  }
+
+  /// Merge two heaps
+  static HeapNode merge(HeapNode first, HeapNode second) {
+    if (first == null) return second;
+    if (second == null) return first;
+    if (first.value < second.value) {
+      if (first.leftChild == null) {
+        first.leftChild = second;
+      } else {
+        first.leftChild.siblings.add(second);
+      }
+      return first;
+    } else {
+      if (second.leftChild == null) {
+        second.leftChild = first;
+      } else {
+        second.leftChild.siblings.add(first);
+      }
+      return second;
+    }
+  }
+}
+
+class HeapNode {
+  double value;
+  HeapNode leftChild;
+  List<HeapNode> siblings;
+
+  HeapNode(this.value) {
+    this.siblings = List<HeapNode>();
   }
 }
