@@ -85,30 +85,35 @@ class Region {
       Log.writeln("New beginning: " + currentPath.toString());
 
       // Select shortest and 2nd shortest path from this city to another unvisited city
-      double minDistance = double.infinity;
-      double minDistance2 = double.infinity;
+      // double minDistance = double.infinity;
+      // double minDistance2 = double.infinity;
+      // Path selectedPath = null;
+      // Path secondSelectedPath = null;
+
+      // for (var path in currentPath.cities.last.paths) {
+      //   var anotherCity =
+      //       path.from == currentPath.cities.last ? path.to : path.from;
+      //   if (anotherCity.shortestAvailablePath == null) {
+      //     if (path.distance < minDistance) {
+      //       if (minDistance < minDistance2) {
+      //         minDistance2 = minDistance;
+      //         secondSelectedPath = selectedPath;
+      //       }
+      //       minDistance = path.distance;
+      //       selectedPath = path;
+      //     } else {
+      //       if (path.distance < minDistance2) {
+      //         minDistance2 = path.distance;
+      //         secondSelectedPath = path;
+      //       }
+      //     }
+      //   }
+      // }
+
       Path selectedPath = null;
       Path secondSelectedPath = null;
-
-      for (var path in currentPath.cities.last.paths) {
-        var anotherCity =
-            path.from == currentPath.cities.last ? path.to : path.from;
-        if (anotherCity.shortestAvailablePath == null) {
-          if (path.distance < minDistance) {
-            if (minDistance < minDistance2) {
-              minDistance2 = minDistance;
-              secondSelectedPath = selectedPath;
-            }
-            minDistance = path.distance;
-            selectedPath = path;
-          } else {
-            if (path.distance < minDistance2) {
-              minDistance2 = path.distance;
-              secondSelectedPath = path;
-            }
-          }
-        }
-      }
+      double minDistance = selectedPath.distance;
+      double minDistance2 = secondSelectedPath.distance;
 
       if (selectedPath == null) {
         Log.writeln("No path from last city on path " + currentPath.toString());
@@ -293,6 +298,12 @@ class PairingMinHeap {
 
   /// Remove root, then merge all subheaps
   void deleteMin() {
+    if (root == null) return;
+    if (root.leftChild == null) {
+      root = root.leftChild;
+      return;
+    }
+
     // Subheaps: root's left child and all left child's siblings
     var subheaps = [root.leftChild]..addAll(root.leftChild.siblings);
     this.root =
