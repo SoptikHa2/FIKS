@@ -33,6 +33,6 @@ loop:
 
 V podstatě to tedy funguje takto. Cestujeme z vrcholu A, a to vždy po nejkratší možné cestě (tedy s nejmenším počtem hlídek). Takto postupujeme dokud nedorazíme do vrcholu B. Jelikož jsme celou dobu chodili po těch nejkratších možných cestách, určitě je maximum těchto vzdáleností minimální - tedy máme cestu, kde maximální počet hlídek mezi městy je co nejmenší.
 
-Časová složitost může být až řádově `O(n*log(n))` - `n` je počet cest (při volbě vhodné kolekce, která dovoluje hledání minima v O(1) - samozřejmě se nabízí použít haldu).
+Časová složitost může být až řádově `O(n*log(n))` - `n` je počet cest (při volbě vhodné kolekce, která dovoluje hledání minima v O(1) - samozřejmě se nabízí použít haldu, v mé implementaci jsem použil párovací haldu).
 
 Petr Šťastný

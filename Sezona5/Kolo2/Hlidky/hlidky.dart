@@ -39,7 +39,7 @@ main(List<String> args) {
 }
 
 class Region {
-  // All paths that can be went to
+  // All paths that we can use to get to another city
   PairingHeap<Path> pathsThatAreAvailableToBacktrack;
 
   List<City> cities;
@@ -121,6 +121,10 @@ class Region {
     return selectedPath;
   }
 
+  /// Take paths from currently last visited city,
+  /// check if they aren't invalid (going to previously visited city)
+  /// and add them to the heap that contain paths that can be used
+  /// to get to another city.
   void _addCurrentPathsToAvailablePaths(Result currentResult) {
     var currentCity = currentResult.passedCities.last;
     for (var path in currentCity.paths) {
@@ -207,7 +211,7 @@ class Result {
   }
 }
 
-/// # Minimum pairing heap.
+/// # Pairing heap.
 /// https://en.wikipedia.org/wiki/Pairing_heap
 /// https://brilliant.org/wiki/pairing-heap/
 ///
@@ -226,7 +230,8 @@ class PairingHeap<T> {
 
   /// root may be null.
   /// defaultMergeFunction returns `bool` and accepts
-  /// two arguments (`T one`, `T other`).
+  /// two arguments (`T one`, `T other`). It returns true
+  /// if the first argument (`T one`) has priority over `T other`.
   PairingHeap(
       this.root, bool defaultCompareFunction(dynamic one, dynamic other)) {
     this.defaultMergeFunction = defaultCompareFunction;
