@@ -297,8 +297,8 @@ class HeapNode<T> {
   dynamic compareFunction;
 
   /// Create new heapnode with value of given type T.
-  /// Define compareFunction, that returns if `T one` has
-  /// higher priority (is lower?) than `T other`.
+  /// Define compareFunction, that returns true if `T one` has
+  /// higher priority than `T other`.
   HeapNode(this.value, bool compareFunction(dynamic one, dynamic other)) {
     this.compareFunction = compareFunction;
   }
