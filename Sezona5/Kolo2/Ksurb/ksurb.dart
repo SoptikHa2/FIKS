@@ -8,7 +8,11 @@ main(List<String> args) {
     var line = stdin.readLineSync().split(' ');
     int requiredResult = int.parse(line[0]);
     var numbers = line.skip(2).map((s) => int.parse(s)).toList();
-    bool canBeDone = false;
+    bool canBeDone = guess(numbers, requiredResult);
+    if(canBeDone){
+      canBeDone = backtrack(numbersToMap(numbers), Queue<int>(), requiredResult, 0);
+    }
+
     if (numbers.length > 6) {
       // There is no way we can do this in time
       canBeDone = guess(numbers, requiredResult);
@@ -22,6 +26,29 @@ main(List<String> args) {
       print('NELZE');
     }
   }
+}
+
+Map<int, int> numbersToMap(List<int> numbers){
+  var map = Map<int, int>();
+  for (var number in numbers) {
+    if(map.containsKey(number)){
+      map[number]++;
+    }else{
+      map[number] = 1;
+    }
+  }
+  return map;
+}
+
+List<int> mapToNumbers(Map<int, int> map){
+  var list = List<int>();
+  for (var key in map.keys) {
+    var value = map[key];
+    for (var i = 0; i < value; i++) {
+      list.add(key);
+    }
+  }
+  return list;
 }
 
 void test() {
@@ -163,16 +190,77 @@ bool solve(List<int> numbers, int target) {
 }
 
 bool guess(List<int> numbers, int target) {
+  if(numbers.length == 0){
+    return target == 0;
+  }
+
   // Veryify maximum
   int maximumAddition = numbers.reduce((a, b) => a + b);
-  if (target > maximumAddition)
-    return false;
-  
+  if (target > maximumAddition) return false;
+
   // Verify parity
   int numberOfOddNumbers = numbers.where((n) => n.isOdd).length;
-  if(numberOfOddNumbers.isEven != target.isEven){
+  if (numberOfOddNumbers.isEven != target.isEven) {
     return false;
   }
 
   return true;
+}
+
+bool minimizeInput(List<int> numbers, int target) {
+  var s = HashSet<int>();
+  for (var number in numbers) {
+    if (s.contains(number)) {
+      if (target > 0)
+        target -= number;
+      else
+        target += number;
+    } else {
+      s.add(number);
+    }
+  }
+
+  print('Running solve @ target $target and numbers $s');
+
+  return solve(s.toList(), target);
+}
+
+bool backtrack(
+    Map<int, int> numbers, Queue<int> currentPath, int result, int currentSum) {
+  
+  stderr.writeln(currentPath);
+  if (currentSum == result) {
+    return true;
+  }
+  if(guess(mapToNumbers(numbers), result - currentSum) == false){
+    return false;
+  }
+
+  for (var key in numbers.keys) {
+    var value = numbers[key];
+    int newSum = currentSum;
+    if (value > 0) {
+      numbers[key]--;
+      if (result - currentSum > 0) {
+        newSum -= key;
+      } else {
+        newSum += key;
+      }
+      currentPath.add(key);
+      var btResult = backtrack(numbers, currentPath, result, newSum);
+      currentPath.removeLast();
+      //numbers[key]++;
+      if(btResult == true){
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+class MinimizedInput {
+  Iterable<int> numbers;
+  int target;
+  MinimizedInput(this.numbers, this.target);
 }
