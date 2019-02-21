@@ -1,6 +1,27 @@
 import 'dart:io';
 
 main(List<String> args) {
+  var arr = [5, 9, 9, 9, 5];
+  var heap = PairingMinHeap<int>(null, ((a, b) => a < b));
+  for (var item in arr) {
+    heap.insert(item);
+  }
+  print(heap.findMin().value);
+  print(heap.toIterable().toList().toString());
+  heap.deleteMin();
+  print(heap.findMin().value);
+  print(heap.toIterable().toList().toString());
+  heap.deleteMin();
+  print(heap.findMin().value);
+  print(heap.toIterable().toList().toString());
+  heap.deleteMin();
+  print(heap.findMin().value);
+  print(heap.toIterable().toList().toString());
+  heap.deleteMin();
+  print(heap.findMin().value);
+  print(heap.toIterable().toList().toString());
+  return;
+
   if (args.contains("-v")) {
     Log.enabled = true;
   }
@@ -89,15 +110,17 @@ class Region {
       // added to the list of possible routes from current city
       Path selectedPath = null;
       Path secondSelectedPath = null;
-      double minDistance = null;
-      double minDistance2 = null;
 
       // Choose shortest path
       while (selectedPath == null) {
-        selectedPath = currentPath.cities.last.paths.findMin().value;
+        selectedPath = currentPath.cities.last.paths.findMin()?.value;
         if (selectedPath == null) {
           break;
         }
+        Log.writeln(
+            "Choosing shortest path with ${currentPath.cities.last.paths.toIterable().length} possibilities");
+        Log.writeln(
+            currentPath.cities.last.paths.toIterable().toList().toString());
         var cityOnTheOtherEndOfThisPath =
             selectedPath.from == currentPath.cities.last
                 ? selectedPath.to
@@ -108,11 +131,25 @@ class Region {
         }
       }
       if (selectedPath != null) {
-        minDistance = selectedPath.distance;
         currentPath.cities.last.paths.deleteMin();
         // And choose second shortest path
-        while(secondSelectedPath == null){
-          
+        while (secondSelectedPath == null) {
+          secondSelectedPath = currentPath.cities.last.paths.findMin()?.value;
+          if (secondSelectedPath == null) {
+            break;
+          }
+          Log.writeln(
+              "Choosing second shortest path with ${currentPath.cities.last.paths.toIterable().length} possibilities");
+          Log.writeln(
+              currentPath.cities.last.paths.toIterable().toList().toString());
+          var cityOnTheOtherEndOfThisPath =
+              secondSelectedPath.from == currentPath.cities.last
+                  ? secondSelectedPath.to
+                  : secondSelectedPath.from;
+          if (cityOnTheOtherEndOfThisPath.shortestAvailablePath != null) {
+            secondSelectedPath = null;
+            currentPath.cities.last.paths.deleteMin();
+          }
         }
       }
 
@@ -139,7 +176,8 @@ class Region {
         if (secondSelectedPath != null) {
           // Mark that there are another routes from this city
           savedPaths.add(Result.from(currentPath));
-          currentPath.cities.last.shortestAvailablePath = minDistance2;
+          currentPath.cities.last.shortestAvailablePath =
+              secondSelectedPath.distance;
         } else {
           currentPath.cities.last.shortestAvailablePath = double.infinity;
         }
@@ -151,7 +189,7 @@ class Region {
       } else {
         // Jump to another city
         savedPaths.add(currentPath);
-        currentPath.cities.last.shortestAvailablePath = minDistance;
+        currentPath.cities.last.shortestAvailablePath = selectedPath.distance;
         currentPath = shortestPath;
         Log.writeln("Jumped to new path: $currentPath");
       }
@@ -200,6 +238,11 @@ class Path {
   double distance;
 
   Path(this.from, this.to, this.distance);
+
+  @override
+  String toString() {
+    return distance.toStringAsFixed(0);
+  }
 }
 
 class City {
@@ -289,7 +332,8 @@ class PairingMinHeap<T> {
   /// root may be null.
   /// defaultMergeFunction returns `bool` and accepts
   /// two arguments (`T one`, `T other`).
-  PairingMinHeap(this.root, bool defaultMergeFunction(T one, T other)) {
+  PairingMinHeap(
+      this.root, bool defaultMergeFunction(dynamic one, dynamic other)) {
     this.defaultMergeFunction = defaultMergeFunction;
   }
 
@@ -312,10 +356,16 @@ class PairingMinHeap<T> {
       return;
     }
 
-    // Subheaps: root's left child and all left child's siblings
-    var subheaps = [root.leftChild]..addAll(root.leftChild.siblings);
-    this.root =
-        subheaps.reduce((first, second) => PairingMinHeap.merge(first, second));
+    // Subheaps: left child
+    var subheaps = [root.leftChild]/*..addAll(*//*root.leftChild.siblings*//*)*/;
+    print("[DEL] Self: ${root.leftChild}");
+    print("[DEL] Siblings: ${root.leftChild.siblings}");
+    this.root = subheaps[0];
+    for (var i = 1; i < subheaps.length; i++) {
+      this.root = PairingMinHeap.merge(this.root, subheaps[i]);
+    }
+    // this.root =
+    //     subheaps.reduce((first, second) => PairingMinHeap.merge(first, second));
   }
 
   /// Merge the node with rest of the heap
@@ -335,6 +385,8 @@ class PairingMinHeap<T> {
 
   /// Merge two heaps
   static HeapNode merge(HeapNode first, HeapNode second) {
+    print(
+        "Merge: ${PairingMinHeap(first, null)} + ${PairingMinHeap(second, null)}");
     if (first == null) return second;
     if (second == null) return first;
     if (first.compareFunction(first.value, second.value)) {
@@ -343,6 +395,7 @@ class PairingMinHeap<T> {
       } else {
         first.leftChild.siblings.add(second);
       }
+      print("Merge result: ${PairingMinHeap(first, null)}");
       return first;
     } else {
       if (second.leftChild == null) {
@@ -350,8 +403,14 @@ class PairingMinHeap<T> {
       } else {
         second.leftChild.siblings.add(first);
       }
+      print("Merge result: ${PairingMinHeap(second, null)}");
       return second;
     }
+  }
+
+  @override
+  String toString() {
+    return this.toIterable().map((n) => n.toString()).toList().toString();
   }
 }
 
@@ -364,7 +423,7 @@ class HeapNode<T> {
   /// Create new heapnode with value of given type T.
   /// Define compareFunction, that returns if `T one` has
   /// higher priority (is lower?) than `T other`.
-  HeapNode(this.value, bool compareFunction(T one, T other)) {
+  HeapNode(this.value, bool compareFunction(dynamic one, dynamic other)) {
     this.siblings = List<HeapNode>();
     this.compareFunction = compareFunction;
   }
@@ -380,5 +439,10 @@ class HeapNode<T> {
         yield yieldedValue;
       }
     }
+  }
+
+  @override
+  String toString() {
+    return value.toString();
   }
 }
