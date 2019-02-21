@@ -1,27 +1,6 @@
 import 'dart:io';
 
 main(List<String> args) {
-  var arr = [5, 9, 9, 9, 5];
-  var heap = PairingMinHeap<int>(null, ((a, b) => a < b));
-  for (var item in arr) {
-    heap.insert(item);
-  }
-  print(heap.findMin().value);
-  print(heap.toIterable().toList().toString());
-  heap.deleteMin();
-  print(heap.findMin().value);
-  print(heap.toIterable().toList().toString());
-  heap.deleteMin();
-  print(heap.findMin().value);
-  print(heap.toIterable().toList().toString());
-  heap.deleteMin();
-  print(heap.findMin().value);
-  print(heap.toIterable().toList().toString());
-  heap.deleteMin();
-  print(heap.findMin().value);
-  print(heap.toIterable().toList().toString());
-  return;
-
   if (args.contains("-v")) {
     Log.enabled = true;
   }
@@ -247,7 +226,7 @@ class Path {
 
 class City {
   int id;
-  PairingMinHeap<Path> paths;
+  PairingHeap<Path> paths;
 
   /// null - City was not visited yet
   ///
@@ -257,7 +236,7 @@ class City {
   double shortestAvailablePath = null;
 
   City(this.id) {
-    paths = PairingMinHeap<Path>(null, ((a, b) => a.distance < b.distance));
+    paths = PairingHeap<Path>(null, ((a, b) => a.distance < b.distance));
   }
 
   @override
@@ -325,19 +304,19 @@ class Log {
 /// Tree, where all nodes contain
 /// pointer to left child and
 /// siblings.
-class PairingMinHeap<T> {
+class PairingHeap<T> {
   HeapNode root;
   dynamic defaultMergeFunction;
 
   /// root may be null.
   /// defaultMergeFunction returns `bool` and accepts
   /// two arguments (`T one`, `T other`).
-  PairingMinHeap(
-      this.root, bool defaultMergeFunction(dynamic one, dynamic other)) {
-    this.defaultMergeFunction = defaultMergeFunction;
+  PairingHeap(
+      this.root, bool defaultCompareFunction(dynamic one, dynamic other)) {
+    this.defaultMergeFunction = defaultCompareFunction;
   }
 
-  PairingMinHeap.fromHeap(PairingMinHeap first, PairingMinHeap second) {
+  PairingHeap.fromHeap(PairingHeap first, PairingHeap second) {
     this.root = first.root;
     this.root.leftChild = second.root;
     this.defaultMergeFunction = first.defaultMergeFunction;
@@ -348,29 +327,29 @@ class PairingMinHeap<T> {
     return root;
   }
 
-  /// Remove root, then merge all subheaps
-  void deleteMin() {
-    if (root == null) return;
-    if (root.leftChild == null) {
-      root = root.leftChild;
-      return;
-    }
-
-    // Subheaps: left child
-    var subheaps = [root.leftChild]/*..addAll(*//*root.leftChild.siblings*//*)*/;
-    print("[DEL] Self: ${root.leftChild}");
-    print("[DEL] Siblings: ${root.leftChild.siblings}");
-    this.root = subheaps[0];
-    for (var i = 1; i < subheaps.length; i++) {
-      this.root = PairingMinHeap.merge(this.root, subheaps[i]);
-    }
-    // this.root =
-    //     subheaps.reduce((first, second) => PairingMinHeap.merge(first, second));
+  void insert(T value) {
+    this.root = HeapNode.merge(root, new HeapNode(value, defaultMergeFunction));
   }
 
-  /// Merge the node with rest of the heap
-  void insert(T value) {
-    this.root = merge(this.root, HeapNode(value, defaultMergeFunction));
+  /// Find minimum and delete it
+  void deleteMin() {
+    this.root = _recDelMerge(root.leftChild);
+  }
+
+  HeapNode _recDelMerge(HeapNode node) {
+    if (node == null || node.nextSibling == null) {
+      return node;
+    } else {
+      HeapNode a, b, newNode;
+      a = node;
+      b = node.nextSibling;
+      newNode = node.nextSibling.nextSibling;
+
+      a.nextSibling = null;
+      b.nextSibling = null;
+
+      return HeapNode.merge(HeapNode.merge(a, b), _recDelMerge(newNode));
+    }
   }
 
   /// Generate iterable of node values,
@@ -383,31 +362,6 @@ class PairingMinHeap<T> {
     }
   }
 
-  /// Merge two heaps
-  static HeapNode merge(HeapNode first, HeapNode second) {
-    print(
-        "Merge: ${PairingMinHeap(first, null)} + ${PairingMinHeap(second, null)}");
-    if (first == null) return second;
-    if (second == null) return first;
-    if (first.compareFunction(first.value, second.value)) {
-      if (first.leftChild == null) {
-        first.leftChild = second;
-      } else {
-        first.leftChild.siblings.add(second);
-      }
-      print("Merge result: ${PairingMinHeap(first, null)}");
-      return first;
-    } else {
-      if (second.leftChild == null) {
-        second.leftChild = first;
-      } else {
-        second.leftChild.siblings.add(first);
-      }
-      print("Merge result: ${PairingMinHeap(second, null)}");
-      return second;
-    }
-  }
-
   @override
   String toString() {
     return this.toIterable().map((n) => n.toString()).toList().toString();
@@ -417,22 +371,44 @@ class PairingMinHeap<T> {
 class HeapNode<T> {
   T value;
   HeapNode leftChild;
-  List<HeapNode> siblings;
+  HeapNode nextSibling;
   dynamic compareFunction;
 
   /// Create new heapnode with value of given type T.
   /// Define compareFunction, that returns if `T one` has
   /// higher priority (is lower?) than `T other`.
   HeapNode(this.value, bool compareFunction(dynamic one, dynamic other)) {
-    this.siblings = List<HeapNode>();
     this.compareFunction = compareFunction;
+  }
+
+  static HeapNode merge(HeapNode one, HeapNode other) {
+    if (one == null) return other;
+    if (other == null) return one;
+    if (one.compareFunction(one.value, other.value)) {
+      one.addChild(other);
+      return one;
+    } else {
+      other.addChild(one);
+      return other;
+    }
+  }
+
+  void addChild(HeapNode other) {
+    if (leftChild == null) {
+      leftChild = other;
+    } else {
+      other.nextSibling = leftChild;
+      leftChild = other;
+    }
   }
 
   /// Generate list of node values
   Iterable<T> toIterable() sync* {
     yield this.value;
-    for (var sibling in siblings) {
-      yield sibling.value;
+    if (nextSibling != null) {
+      for (var yieldedValue in nextSibling.toIterable()) {
+        yield yieldedValue;
+      }
     }
     if (leftChild != null) {
       for (var yieldedValue in leftChild.toIterable()) {
