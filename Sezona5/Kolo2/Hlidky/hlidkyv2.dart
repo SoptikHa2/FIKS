@@ -21,11 +21,6 @@ main(List<String> args) {
     input.addPath(a - 1, b - 1, h.toDouble());
   }
 
-  //if (args.contains("--DEBUG")) {
-  //print(input.generateDebugInDotFormat());
-  //return;
-  //}
-
   int q = int.parse(stdin.readLineSync());
   // Queries
   for (var i = 0; i < q; i++) {
@@ -75,15 +70,14 @@ class Region {
     Result currentPath = Result(sourceCity);
     _addCurrentPathsToAvailablePaths(currentPath);
 
-    Log.writeln("Initialized path from $sourceCity to $targetCity");
 
     while (true) {
       if (currentPath.passedCities.last == targetCity) {
         // Solution!
         return currentPath;
       } else {
+        // Find shortest possible path and go there
         var bestPathToFollow = popBestPathToFollow();
-        Log.writeln("Selected $bestPathToFollow out of " + pathsThatAreAvailableToBacktrack.toIterable().toString());
         if (bestPathToFollow == null) {
           // No solution
           return null;
@@ -102,7 +96,7 @@ class Region {
   /// while throwing away invalid paths
   Path popBestPathToFollow() {
     Path selectedPath = null;
-    while (selectedPath != null) {
+    while (selectedPath == null) {
       selectedPath = pathsThatAreAvailableToBacktrack.findMin().value;
       if (selectedPath == null) {
         // No path available
@@ -129,7 +123,6 @@ class Region {
 
   void _addCurrentPathsToAvailablePaths(Result currentResult) {
     var currentCity = currentResult.passedCities.last;
-    Log.writeln(currentCity.paths);
     for (var path in currentCity.paths) {
       if (path.associatedBacktrack != null) {
         continue;
@@ -185,7 +178,7 @@ class City {
 
 class Result {
   List<City> passedCities;
-  double maximumPathLength;
+  double maximumPathLength = 0;
 
   Result(City sourceCity) {
     this.passedCities = [sourceCity];
