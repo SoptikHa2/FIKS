@@ -22,6 +22,7 @@ loop:
     
     jdi(dalsiCesta)
     lokace = dalsiCesta.noveMesto
+    lokace.navstiveno = ano
     pridej do mozneCesty vsechny cesty z lokace // Vyloucime cesty, ktere jdou do emsta, ktere jsme uz navstivili
 ```
 
