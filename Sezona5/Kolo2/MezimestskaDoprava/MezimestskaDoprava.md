@@ -41,3 +41,8 @@ konecDne:
     konec
 ```
 
+Vybudování a připravení stromu k dotazům stojí až `O(n*log(n))`, kde `n` je počet intervalů přepravených lidí (resp. počet dostavníků). Potom jenom zjistíme ve kterém městě je nachází někdo navíc - což lze zjistit v triviálním čase - a následně, pokud je v nějakém městě, ho binárně najdeme. Takže půjde z vrcholu segmentového stromu dolů, vždy se zeptáme ve které půlce intervalu se nachází a tam sestoupíme - dokud nedorazíme na konec a nenajdeme ID daného člověka. Toto hledání zvládneme v `O(log(n))`. 
+
+Celková složitost by tedy měla být řádově `O(n*log(n))`. 
+
+Petr Šťastný
