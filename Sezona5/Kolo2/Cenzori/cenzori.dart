@@ -18,8 +18,8 @@ main(List<String> args) {
     stderr.writeln('#######################');
 
     var treeMin = SegmentTree.min(List.generate(inp_n, (_) => 0));
-    var treeMax = SegmentTree.max(List.generate(inp_n, (_) => 0));
-    var treeSum = SegmentTree.sum(List.generate(inp_n, (_) => 0));
+    //var treeMax = SegmentTree.max(List.generate(inp_n, (_) => 0));
+    //var treeSum = SegmentTree.sum(List.generate(inp_n, (_) => 0));
     var resultsMin = List<int>();
     var resultsMax = List<int>();
     var resultsSum = List<int>();
@@ -34,18 +34,18 @@ main(List<String> args) {
       switch (realInput.t) {
         case 0:
           resultsMin.add(treeMin.queryOnInterval(realInput.b, realInput.e));
-          resultsMax.add(treeMax.queryOnInterval(realInput.b, realInput.e));
-          resultsSum.add(treeSum.queryOnInterval(realInput.b, realInput.e));
+          //resultsMax.add(treeMax.queryOnInterval(realInput.b, realInput.e));
+          //resultsSum.add(treeSum.queryOnInterval(realInput.b, realInput.e));
           break;
         case 1:
           treeMin.addOnIntervalLazy(realInput.b, realInput.e, realInput.a);
-          treeMax.addOnIntervalLazy(realInput.b, realInput.e, realInput.a);
-          treeSum.addOnIntervalLazy(realInput.b, realInput.e, realInput.a);
+          //treeMax.addOnIntervalLazy(realInput.b, realInput.e, realInput.a);
+          //treeSum.addOnIntervalLazy(realInput.b, realInput.e, realInput.a);
           break;
         case 2:
           treeMin.setOnIntervalLazy(realInput.b, realInput.e, realInput.a);
-          treeMax.setOnIntervalLazy(realInput.b, realInput.e, realInput.a);
-          treeSum.setOnIntervalLazy(realInput.b, realInput.e, realInput.a);
+          //treeMax.setOnIntervalLazy(realInput.b, realInput.e, realInput.a);
+          //treeSum.setOnIntervalLazy(realInput.b, realInput.e, realInput.a);
           break;
       }
     }
