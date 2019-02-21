@@ -52,7 +52,7 @@ class Region {
   Region(int numberOfCities) {
     this.pathsThatAreAvailableToBacktrack =
         PairingHeap<Path>(null, ((p1, p2) => p1.distance < p2.distance));
-    this.cities = List<City>(numberOfCities);
+    this.cities = List.generate(numberOfCities, (_) => City(), growable: false);
   }
 
   void addPath(int cityFrom, int cityTo, double distance) {
