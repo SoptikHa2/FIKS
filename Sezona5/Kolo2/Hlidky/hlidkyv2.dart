@@ -52,7 +52,7 @@ class Region {
   Region(int numberOfCities) {
     this.pathsThatAreAvailableToBacktrack =
         PairingHeap<Path>(null, ((p1, p2) => p1.distance < p2.distance));
-    this.cities = List.generate(numberOfCities, (_) => City(), growable: false);
+    this.cities = List.generate(numberOfCities, (index) => City(index), growable: false);
   }
 
   void addPath(int cityFrom, int cityTo, double distance) {
@@ -75,12 +75,15 @@ class Region {
     Result currentPath = Result(sourceCity);
     _addCurrentPathsToAvailablePaths(currentPath);
 
+    Log.writeln("Initialized path from $sourceCity to $targetCity");
+
     while (true) {
       if (currentPath.passedCities.last == targetCity) {
         // Solution!
         return currentPath;
       } else {
         var bestPathToFollow = popBestPathToFollow();
+        Log.writeln("Selected $bestPathToFollow out of " + pathsThatAreAvailableToBacktrack.toIterable().toString());
         if (bestPathToFollow == null) {
           // No solution
           return null;
@@ -126,6 +129,7 @@ class Region {
 
   void _addCurrentPathsToAvailablePaths(Result currentResult) {
     var currentCity = currentResult.passedCities.last;
+    Log.writeln(currentCity.paths);
     for (var path in currentCity.paths) {
       if (path.associatedBacktrack != null) {
         continue;
@@ -142,6 +146,9 @@ class Region {
         PairingHeap<Path>(null, ((p1, p2) => p1.distance < p2.distance));
     for (var city in cities) {
       city.visited = false;
+      for (var path in city.paths) {
+        path.associatedBacktrack = null;
+      }
     }
   }
 }
@@ -154,6 +161,11 @@ class Path {
 
   /// If this is true, `firstCity` is the target destination.
   bool isDestinationFirstCity;
+
+  @override
+  String toString() {
+    return "$firstCity -> $secondCity";
+  }
 }
 
 class City {
@@ -161,8 +173,13 @@ class City {
   bool visited;
   List<Path> paths;
 
-  City() {
+  City(this.id) {
     paths = List<Path>();
+  }
+
+  @override
+  String toString() {
+    return (id+1).toString();
   }
 }
 
