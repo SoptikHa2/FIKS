@@ -75,7 +75,7 @@ Na konci bychom měli mít optimální řešení - až na jeden malý detail. M�
 
 Po implementaci této kontroly už bychom měli mít skutečně optimální řešení.
 
-Základní algoritmus má složitost řádově `O(n*m)`, kde n je počet účtů a m je maximální zůstatek na libovolném účtu. Protože z n účtů (resp. v průměru n/2) vybíráme jeden na který převádíme peníze, a to provádíme m krát (resp. m/2 krát).
+Základní algoritmus má složitost řádově `O(n*m)`, kde n je počet účtů a m je maximální zůstatek na libovolném účtu. Protože z n účtů vybíráme jeden na který převádíme peníze, a to provádíme m krát.
 
 
 Dále mě ještě napadly dvě další možnosti řešení, ale bohužel se mi je nepodařilo dotáhnout do konce. Jedna z možností bylo převést tento problém na problém batohu, protože není rozdíl mezi převáděním peněz mezi účty a dáváním předmětů do batohu. Problém byly transakční poplatky za jeden převedený předmět, což by pravděpodobně znamenalo, že by tento postup byl velmi pomalý. Dále mě napadlo použít toky v sítích, což by znamenalo, že bychom nemuseli čarovat s tím, ze kterého účtu zrovna odebíráme peníze. Nevýhoda je, že toky v sítích by maximalizovali využití prostředků, místo minimalizace zůstatku na účtech, což je problém, který se mi nepodařilo překonat. Zajímalo by mě, jestli tento problém skutečně je toky v sítích řešitelný.
