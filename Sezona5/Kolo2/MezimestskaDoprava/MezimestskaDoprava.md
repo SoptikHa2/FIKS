@@ -2,7 +2,7 @@
 
 Máme několik málo měst, ve kterých žije obrovské množství lidí, každý má přiřazené ID, unikátní pouze v rámci města. Lidé se přepravují mezi městy přepravníky. Každý přepravník veze interval A-B lidí. Kdo zůstal v jiném městě? Víme že vyjel z města 0.
 
-Uděláme to následovně - budeme monitorovat všechna města kromě města 0, o které se nemusíme starat. Pro každé město vytvoříme nějakou vhodnou datovou strukturu - nabízí se segmentový strom, do které budeme zaznamenávat příchozí/odchozí transporty lidí.
+Uděláme to následovně - budeme monitorovat všechna města kromě města 0, o které se nemusíme starat. Pro každé město vytvoříme nějakou vhodnou datovou strukturu - nabízí se segmentový strom, do kterého budeme zaznamenávat příchozí/odchozí transporty lidí.
 
 Díky tomuto segmentovému stromu zjistíme maximum všech lidí ve městě. Pokud tedy na konci dne v nějakém městě bude existovat maximum 2, víme, že tam je hledaná osoba. Najít ID této osoby je potom triviální. Pokud v žádnem z 24 monitorovaných měst nebudou dva lidé se stejným ID, náš odvážlivec zůstal v městě 0.
 
@@ -41,3 +41,8 @@ konecDne:
     konec
 ```
 
+Vybudování a připravení stromu k dotazům stojí až `O(n*log(n))`, kde `n` je počet intervalů přepravených lidí (resp. počet dostavníků). Potom jenom zjistíme ve kterém městě se nachází někdo navíc - což lze zjistit pro 24 měst konstantně rychle (rep. pro `M` měst by to trvalo `O(M)`) - a následně, pokud se v nějakém městě nachází, najdeme ho pomocí binárního vyhledávání. Takže půjdeme z vrcholu segmentového stromu dolů, vždy se zeptáme ve které půlce intervalu se nachází a tam sestoupíme - dokud nedorazíme na konec a nenajdeme ID daného člověka. Toto hledání zvládneme v `O(log(n))`. 
+
+Celková složitost by tedy měla být řádově `O(n*log(n))`. 
+
+Petr Šťastný

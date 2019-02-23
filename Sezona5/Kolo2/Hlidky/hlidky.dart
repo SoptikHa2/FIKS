@@ -21,11 +21,6 @@ main(List<String> args) {
     input.addPath(a - 1, b - 1, h.toDouble());
   }
 
-  if (args.contains("--DEBUG")) {
-    print(input.generateDebugInDotFormat());
-    return;
-  }
-
   int q = int.parse(stdin.readLineSync());
   // Queries
   for (var i = 0; i < q; i++) {
@@ -44,170 +39,179 @@ main(List<String> args) {
 }
 
 class Region {
-  List<City> _cities;
+  // All paths that we can use to get to another city
+  PairingHeap<Path> pathsThatAreAvailableToBacktrack;
+
+  List<City> cities;
 
   Region(int numberOfCities) {
-    _cities =
-        List.generate(numberOfCities, (index) => City(index), growable: false);
+    this.pathsThatAreAvailableToBacktrack =
+        PairingHeap<Path>(null, ((p1, p2) => p1.distance < p2.distance));
+    this.cities = List.generate(numberOfCities, (index) => City(index), growable: false);
   }
 
-  void addPath(int from, int to, double numberOfControls) {
-    var cityFrom = _cities[from];
-    var cityTo = _cities[to];
-    var path = Path(cityFrom, cityTo, numberOfControls);
-    cityFrom.paths.insert(path);
-    cityTo.paths.insert(path);
+  void addPath(int cityFrom, int cityTo, double distance) {
+    var path = Path();
+    path.firstCity = cities[cityFrom];
+    path.secondCity = cities[cityTo];
+    path.distance = distance;
+    cities[cityFrom].paths.add(path);
+    cities[cityTo].paths.add(path);
   }
 
-  /// Remove old results from all objects here
-  void _purge() {
-    for (var city in _cities) {
-      city.shortestAvailablePath = null;
-    }
-  }
+  Result query(int cityFrom, int cityTo) {
+    _tidyEverything();
 
-  /// Execute query from city `from` to city `to`.
-  Result query(int from, int to) {
-    _purge();
+    // Init
+    var sourceCity = cities[cityFrom];
+    var targetCity = cities[cityTo];
 
-    Log.writeln("Starting query from ${from + 1} to ${to + 1}");
-    // Initialize
-    List<Result> savedPaths = List<Result>();
-    Result currentPath = Result();
-    currentPath.cities.add(_cities[from]);
+    // Add paths from source city to list of paths that can be used
+    Result currentPath = Result(sourceCity);
+    _addCurrentPathsToAvailablePaths(currentPath);
+
 
     while (true) {
-      if (currentPath.cities.last.id == to) {
-        // We have result!
-        Log.writeln("Found result with path " + currentPath.toString());
+      if (currentPath.passedCities.last == targetCity) {
+        // Solution!
         return currentPath;
-      }
-      Log.writeln("New beginning: " + currentPath.toString());
-
-      // Select shortest and 2nd shortest path from this city to another unvisited city
-      // The shortest one (might) be the one we will go to, in which case the second one will be
-      // added to the list of possible routes from current city
-
-    }
-  }
-
-  Result _backtrackToShortestPossiblePath(List<Result> results) {
-    double min = double.infinity;
-    Result res = null;
-
-    for (var result in results) {
-      if (result.cities.last.shortestAvailablePath != null &&
-          result.cities.last.shortestAvailablePath < min) {
-        min = result.cities.last.shortestAvailablePath;
-        res = result;
-      }
-    }
-
-    return res;
-  }
-
-  String generateDebugInDotFormat() {
-    String s = "graph hlidky {\n";
-    for (var city in _cities) {
-      s += "$city\n";
-    }
-    s += "\n\n";
-    for (var city in _cities) {
-      for (var path in city.paths.toIterable()) {
-        if (path.from == city) {
-          s +=
-              "${path.from} -- ${path.to} [label=${path.distance.toStringAsFixed(0)}]\n";
+      } else {
+        // Find shortest possible path and go there
+        var bestPathToFollow = popBestPathToFollow();
+        if (bestPathToFollow == null) {
+          // No solution
+          return null;
         }
+        currentPath = bestPathToFollow.associatedBacktrack;
+
+        // Let's follow the path
+        currentPath.goToNextCity(bestPathToFollow);
+        // Add paths from this new city to list of possible routes
+        _addCurrentPathsToAvailablePaths(currentPath);
       }
     }
-    s += "}";
-    return s;
+  }
+
+  /// Pop path from pathsThatAreAvailableToBacktrack,
+  /// while throwing away invalid paths
+  Path popBestPathToFollow() {
+    Path selectedPath = null;
+    while (selectedPath == null) {
+      selectedPath = pathsThatAreAvailableToBacktrack.findMin().value;
+      if (selectedPath == null) {
+        // No path available
+        break;
+      }
+
+      var city = selectedPath.isDestinationFirstCity
+          ? selectedPath.firstCity
+          : selectedPath.secondCity;
+      if (city.visited) {
+        // Invalid path
+        pathsThatAreAvailableToBacktrack.deleteMin();
+        selectedPath = null;
+      }
+    }
+
+    if (selectedPath != null) {
+      // Pop
+      pathsThatAreAvailableToBacktrack.deleteMin();
+    }
+
+    return selectedPath;
+  }
+
+  /// Take paths from currently last visited city,
+  /// check if they aren't invalid (going to previously visited city)
+  /// and add them to the heap that contain paths that can be used
+  /// to get to another city.
+  void _addCurrentPathsToAvailablePaths(Result currentResult) {
+    var currentCity = currentResult.passedCities.last;
+    for (var path in currentCity.paths) {
+      if (path.associatedBacktrack != null) {
+        continue;
+      }
+      path.isDestinationFirstCity = path.firstCity != currentCity;
+      path.associatedBacktrack = currentResult;
+      pathsThatAreAvailableToBacktrack.insert(path);
+    }
+  }
+
+  /// This needs to be runned before running every query, so we clean all the changes after last one
+  void _tidyEverything() {
+    pathsThatAreAvailableToBacktrack =
+        PairingHeap<Path>(null, ((p1, p2) => p1.distance < p2.distance));
+    for (var city in cities) {
+      city.visited = false;
+      for (var path in city.paths) {
+        path.associatedBacktrack = null;
+      }
+    }
   }
 }
 
 class Path {
-  City from;
-  City to;
-
-  /// Length, or number of control points
+  City firstCity;
+  City secondCity;
+  Result associatedBacktrack;
   double distance;
 
-  Path(this.from, this.to, this.distance);
+  /// If this is true, `firstCity` is the target destination.
+  bool isDestinationFirstCity;
 
   @override
   String toString() {
-    return distance.toStringAsFixed(0);
+    return "$firstCity -> $secondCity";
   }
 }
 
 class City {
   int id;
-  PairingHeap<Path> paths;
-
-  /// null - City was not visited yet
-  ///
-  /// \d - length of shortest unvisited path (from this city)
-  ///
-  /// infinity - city has no more unvisited paths
-  double shortestAvailablePath = null;
+  bool visited;
+  List<Path> paths;
 
   City(this.id) {
-    paths = PairingHeap<Path>(null, ((a, b) => a.distance < b.distance));
+    paths = List<Path>();
   }
 
   @override
   String toString() {
-    return (id + 1).toString();
+    return (id+1).toString();
   }
 }
 
-/// This structure contains cities in path.
-/// It is used to easily backtrack to older paths
 class Result {
-  List<City> cities;
-  double currentMaximumPath = double.negativeInfinity;
+  List<City> passedCities;
+  double maximumPathLength = 0;
 
-  Result() {
-    cities = List<City>();
+  Result(City sourceCity) {
+    this.passedCities = [sourceCity];
   }
 
-  Result.from(Result other) {
-    cities = List.from(other.cities);
-    currentMaximumPath = other.currentMaximumPath;
+  Result.from(Result otherResult) {
+    this.maximumPathLength = otherResult.maximumPathLength;
+    this.passedCities = List.from(otherResult.passedCities);
   }
 
-  void addNewCityFromPath(Path path) {
-    cities.add(path.from == cities.last ? path.to : path.from);
-    if (path.distance > currentMaximumPath) {
-      Log.writeln(
-          "Changed maximum distance from ${currentMaximumPath.toStringAsFixed(0)} to ${path.distance.toStringAsFixed(0)} for $this");
-      currentMaximumPath = path.distance;
+  goToNextCity(Path usedPath) {
+    var otherCity = usedPath.isDestinationFirstCity
+        ? usedPath.firstCity
+        : usedPath.secondCity;
+    this.passedCities.add(otherCity);
+    otherCity.visited = true;
+    if (maximumPathLength < usedPath.distance) {
+      maximumPathLength = usedPath.distance;
     }
   }
 
-  @override
-  String toString() {
-    return cities.join(" -> ");
-  }
-
   String toResultString() {
-    String s = cities.map((c) => c.id + 1).join(" ") + "\n";
-    s += currentMaximumPath.toStringAsFixed(0);
+    String s = passedCities.map((c) => c.id + 1).join(" ") + "\n";
+    s += maximumPathLength.toStringAsFixed(0);
     return s;
   }
 }
 
-class Log {
-  static bool enabled = false;
-
-  static void writeln(Object o) {
-    if (Log.enabled) {
-      stderr.writeln(o);
-    }
-  }
-}
-
-/// # Minimum pairing heap.
+/// # Pairing heap.
 /// https://en.wikipedia.org/wiki/Pairing_heap
 /// https://brilliant.org/wiki/pairing-heap/
 ///
@@ -221,12 +225,13 @@ class Log {
 /// pointer to left child and
 /// siblings.
 class PairingHeap<T> {
-  HeapNode root;
+  HeapNode<T> root;
   dynamic defaultMergeFunction;
 
   /// root may be null.
   /// defaultMergeFunction returns `bool` and accepts
-  /// two arguments (`T one`, `T other`).
+  /// two arguments (`T one`, `T other`). It returns true
+  /// if the first argument (`T one`) has priority over `T other`.
   PairingHeap(
       this.root, bool defaultCompareFunction(dynamic one, dynamic other)) {
     this.defaultMergeFunction = defaultCompareFunction;
@@ -239,12 +244,13 @@ class PairingHeap<T> {
   }
 
   /// Return root, it's always the minimum
-  HeapNode findMin() {
+  HeapNode<T> findMin() {
     return root;
   }
 
   void insert(T value) {
-    this.root = HeapNode.merge(root, new HeapNode(value, defaultMergeFunction));
+    this.root =
+        HeapNode.merge(root, new HeapNode<T>(value, defaultMergeFunction));
   }
 
   /// Find minimum and delete it
@@ -252,7 +258,7 @@ class PairingHeap<T> {
     this.root = _recDelMerge(root.leftChild);
   }
 
-  HeapNode _recDelMerge(HeapNode node) {
+  HeapNode<T> _recDelMerge(HeapNode<T> node) {
     if (node == null || node.nextSibling == null) {
       return node;
     } else {
@@ -291,8 +297,8 @@ class HeapNode<T> {
   dynamic compareFunction;
 
   /// Create new heapnode with value of given type T.
-  /// Define compareFunction, that returns if `T one` has
-  /// higher priority (is lower?) than `T other`.
+  /// Define compareFunction, that returns true if `T one` has
+  /// higher priority than `T other`.
   HeapNode(this.value, bool compareFunction(dynamic one, dynamic other)) {
     this.compareFunction = compareFunction;
   }
@@ -336,5 +342,15 @@ class HeapNode<T> {
   @override
   String toString() {
     return value.toString();
+  }
+}
+
+class Log {
+  static bool enabled = false;
+
+  static void writeln(Object o) {
+    if (Log.enabled) {
+      stderr.writeln(o);
+    }
   }
 }
