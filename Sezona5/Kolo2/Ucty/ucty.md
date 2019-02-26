@@ -59,7 +59,7 @@ A pokračujeme, znovu vybereme minimální cenu transakce, kde ani jeden z účt
 |0  |0(-2)|   |
 |   |   |   |
 
-A máme řešení. Případně se prostě zastavíme před tímto momentem pokud nám dojdou peníze na transakce. Protože jsme utráceli peníze nejhospodárnějším možným způsobem a nikdy jsme nezvedli zůstatek žádného účtu nad průměr, můžeme si být jistí, že jsme situaci maximálně zlepšili, a tedy máme optimální řešení.
+A máme řešení. Případně se prostě zastavíme před tímto momentem pokud nám dojdou peníze na transakce. Protože jsme utráceli peníze nejhospodárnějším možným způsobem a nikdy jsme nezvedli zůstatek žádného účtu nad průměr, můžeme si být jistí, že jsme situaci maximálně zlepšili, a tedy máme (téměř) optimální řešení.
 
 Pokud by se stalo, že najdeme více hodnot se stejnou hodnotou (jako u první tabulky), je jedno co si vybereme.
 
@@ -78,6 +78,8 @@ Po implementaci této kontroly už bychom měli mít skutečně optimální ře�
 Základní algoritmus má složitost řádově `O(n*m)`, kde n je počet účtů a m je maximální zůstatek na libovolném účtu. Protože z n účtů vybíráme jeden na který převádíme peníze, a to provádíme m krát.
 
 
-Dále mě ještě napadly dvě další možnosti řešení, ale bohužel se mi je nepodařilo dotáhnout do konce. Jedna z možností bylo převést tento problém na problém batohu, protože není rozdíl mezi převáděním peněz mezi účty a dáváním předmětů do batohu. Problém byly transakční poplatky za jeden převedený předmět, což by pravděpodobně znamenalo, že by tento postup byl velmi pomalý. Dále mě napadlo použít toky v sítích, což by znamenalo, že bychom nemuseli čarovat s tím, ze kterého účtu zrovna odebíráme peníze. Nevýhoda je, že toky v sítích by maximalizovali využití prostředků, místo minimalizace zůstatku na účtech, což je problém, který se mi nepodařilo překonat. Zajímalo by mě, jestli tento problém skutečně je toky v sítích řešitelný.
+Dále mě ještě napadly dvě další možnosti řešení, ale bohužel se mi je nepodařilo dotáhnout do konce. Jedna z možností je převést si tento problém na problém dávání předmětů do batohu. Není totiž rozdíl mezi zjišťováním, na jaké účty dát peníze, a jaké předměty dát do batohu. Bohužel cena za převedený kredit (místo za transakci) toto dělá opravdu těžké, a museli bychom použít takovou implementaci problému s batohem, kdy vybíráme do batohu jeden předmět z každé kategorie (a máme více batohů). (Každá kategorie by byla jeden účet, třeba kdybychom mohli na účet převést až pět kreditů, byla by to kategorie s pěti předměty). Ale bylo by to nejspíš příliš pomalé a obtížné na implementaci.
+
+Další možnost, která mě opravdu zaujala by bylo použít toky v sítích. Bohužel jsem nepřišel na žádný způsob jak to provést, je možné vůbec tento způsob použít? Toky v sítích jsem už používal když jsem potřeboval nějaké věci přiřazovat k sobě, což by mělo fungovat i pro tento problém, ale nevymyslel jsem způsob, který by fungoval vždy. Také je zde problém, že toky v sítích maximalizují využití (zde: našeho rozpočtu), místo maximalizace hodnoty (jako u batohu), proto bychom nejspíše museli použít nějakou implementaci s váženými vrcholy. Nepodařilo se mi na to ale vymyslet žádný spolehlivý algoritmus.
 
 Petr Šťastný.
