@@ -114,7 +114,7 @@ int moveMoneyCheaply(
           min(remainingBudget ~/ cost,
               optimalResult - cheapestAccountToMoveMoneyTo.currentMoney));
 
-      if (maximumMoneyTransferAmount == 0) break;
+      if (maximumMoneyTransferAmount <= 0) break;
 
       stderr.writeln(
           "Moving ${maximumMoneyTransferAmount} from ${accounts.length - 1} to ${accounts.indexOf(cheapestAccountToMoveMoneyTo)}.");
@@ -132,10 +132,31 @@ int moveMoneyCheaply(
 /// move more money into low-fee accounts
 int revertSomeTransactions(
     List<Account> accounts, int remainingBudget, int optimalResult) {
-      var accountsThatWereImportedTo = accounts.where((a) => a.currentMoney > a.startingMoney).toList();
-      accountsThatWereImportedTo.sort((a, b) => a.feeIncoming.compareTo(b.feeIncoming));
-      
+  var accountsThatWereImportedTo =
+      accounts.where((a) => a.currentMoney > a.startingMoney).toList();
+  accountsThatWereImportedTo
+      .sort((a, b) => a.feeIncoming.compareTo(b.feeIncoming));
+  for (var i = 0; i < accountsThatWereImportedTo.length ~/ 2; i++) {
+    int j = accountsThatWereImportedTo.length - i - 1;
+    var cheapAccouunt = accountsThatWereImportedTo[i];
+    var expensiveAccount = accountsThatWereImportedTo[j];
+
+    if (cheapAccouunt.feeIncoming >= expensiveAccount.feeIncoming) {
+      break;
     }
+
+    int maximumMoneyToTransfer = min(optimalResult - cheapAccouunt.currentMoney,
+        expensiveAccount.currentMoney - expensiveAccount.startingMoney);
+
+    if (maximumMoneyToTransfer <= 0) continue;
+
+    expensiveAccount.currentMoney -= maximumMoneyToTransfer;
+    cheapAccouunt.currentMoney += maximumMoneyToTransfer;
+    remainingBudget += maximumMoneyToTransfer *
+        (expensiveAccount.feeIncoming - cheapAccouunt.feeIncoming);
+  }
+  return remainingBudget;
+}
 
 class Account {
   int currentMoney;
