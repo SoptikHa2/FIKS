@@ -9,3 +9,7 @@ Sezona?/Kolo?/*/*.txt
 .dart_tool
 .packages
 pubspec.lock
+
+# DO track result.txt, which describes how good was the solution
+!Sezona?/Kolo?/result.txt
+!Sezona?/Kolo?/*/result.txt
