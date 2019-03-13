@@ -9,3 +9,6 @@ Sezona?/Kolo?/*/*.txt
 .dart_tool
 .packages
 pubspec.lock
+
+# Do not index generated rust files
+Sezona?/Kolo?/*/target
