@@ -7,7 +7,7 @@ for i in range(0, n):
     input()
     # Load numbers
     numberOfCities: int = int(input().split(' ')[0])
-    stringForbiddenCities: list = input().split(' ')
+    stringForbiddenCities: list = input().strip().split(' ')
     forbiddenCities = [ ]
     cityPaths = [ ]
     for s in stringForbiddenCities:
