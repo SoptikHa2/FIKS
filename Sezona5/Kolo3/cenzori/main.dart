@@ -13,7 +13,7 @@ main(List<String> args) {
     int i_x0 = int.parse(input[4]);
 
     // Start values
-    List<int> startArray = List<int>(i_n);
+    List<int> startArray = List<int>();
 
     /// Key: the number in startArray. Hashset: all indexes that had the value
     Map<int, HashSet<int>> lookupMap = Map();
@@ -21,11 +21,12 @@ main(List<String> args) {
     for (var i = 0; i < i_n; i++) {
       int result = nextLong(i_a, x, i_b);
       x = result;
-      startArray[i] = result % i_n;
-      if (!lookupMap.containsKey(startArray[i])) {
-        lookupMap[startArray[i]] = HashSet();
+      int itemInArray = result % i_n;
+      if (!lookupMap.containsKey(itemInArray)) {
+        lookupMap[itemInArray] = HashSet();
+        startArray.add(itemInArray);
       }
-      lookupMap[startArray[i]].add(i);
+      lookupMap[itemInArray].add(i);
     }
 
     // Sort the array
@@ -55,16 +56,16 @@ main(List<String> args) {
       // Run the query
       int current_k = 0;
       for (var item in startArray) {
-        if (lookupMap[item].any((n) => n >= B && n <= E)) {
-          if (current_k == K) {
+        if (item == null) continue;
+        var passedItems = lookupMap[item].where((n) => n >= B && n <= E);
+        if (passedItems.length > 0) {
+          if (current_k >= K) {
             // We have a result
             results[i] = item;
-            print('$B $E ($K) => $item');
             break;
           } else {
-            current_k++;
+            current_k += passedItems.length;
           }
-        }else{
         }
       }
     }
