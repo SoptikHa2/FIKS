@@ -55,13 +55,16 @@ main(List<String> args) {
       // Run the query
       int current_k = 0;
       for (var item in startArray) {
-        var itemsInRange = lookupMap[item].where((n) => n >= B && n <= E);
-        if (current_k + itemsInRange.length - 1 >= K) {
-          // We have a result
-          results[i] = item;
-          break;
-        } else {
-          current_k += itemsInRange.length;
+        if (lookupMap[item].any((n) => n >= B && n <= E)) {
+          if (current_k == K) {
+            // We have a result
+            results[i] = item;
+            print('$B $E ($K) => $item');
+            break;
+          } else {
+            current_k++;
+          }
+        }else{
         }
       }
     }
