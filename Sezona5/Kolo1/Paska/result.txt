@@ -1,0 +1,113 @@
+8
+Hodnocení pásky - Petr Šťastný
+
+Z popisu a implementace srší pocit, že se opravdu jedná o tvé řešení. S tím ovšem přichází to, že je tam spousta jak drobných, tak větších chyb :)
+
+Jsem přesvědčen o tom, že řešení funguje, ale v nejhorším případě asi trochu hůře, než očekáváš. Prokousat se popisem bylo trochu obtížnější, obrázek by neuškodil.
+
+Analýza složitosti stylem "na začátku se odstraní rychle obrovské množství vstupních bodů" není moc přesná. Co to znamená "rychle" a "obrovské množství bodů"? Takhle ne.
+Buď odhadni složitost shora -- tedy co se stane v nejhorším případě, a odůvodni nějak, že se opravdu jedná o nejhorší případ. Nebo nějak konkretizuj co to je "obrovské", atd. ale tohle často není možné, proto se uchylujeme k analýze nejhoršího možného případu.
+Může se stát, že M=N/2 a H=N/2 ? V tu chvíli je O(MH) = O(N^2) ...
+input.where((p) => p.enabled) má složitost O(N)
+Jelikož se v jedné iteraci přidá alespoň 1 vrchol, tak se může stát nejvíce N iterací. V každé se pro všechny zbylé vrcholy hledá nejbližší hrana (také O(N)), která ale může být pro všechny vrcholy stejná. Poté se k té (alespoň jedné) hraně přidá vrchol, který tak přibude do řešení. Pak se hledá, jetsli nějaký ze zbylých vrcholů je uvnitř výsledného polygonu O(N^2) ... tj celková složitost O(N^3).
+
+
+originální, ale pomalé: 8b8
+Hodnocení pásky - Petr Šťastný
+
+Z popisu a implementace srší pocit, že se opravdu jedná o tvé řešení. S tím ovšem přichází to, že je tam spousta jak drobných, tak větších chyb :)
+
+Jsem přesvědčen o tom, že řešení funguje, ale v nejhorším případě asi trochu hůře, než očekáváš. Prokousat se popisem bylo trochu obtížnější, obrázek by neuškodil.
+
+Analýza složitosti stylem "na začátku se odstraní rychle obrovské množství vstupních bodů" není moc přesná. Co to znamená "rychle" a "obrovské množství bodů"? Takhle ne.
+Buď odhadni složitost shora -- tedy co se stane v nejhorším případě, a odůvodni nějak, že se opravdu jedná o nejhorší případ. Nebo nějak konkretizuj co to je "obrovské", atd. ale tohle často není možné, proto se uchylujeme k analýze nejhoršího možného případu.
+Může se stát, že M=N/2 a H=N/2 ? V tu chvíli je O(MH) = O(N^2) ...
+input.where((p) => p.enabled) má složitost O(N)
+Jelikož se v jedné iteraci přidá alespoň 1 vrchol, tak se může stát nejvíce N iterací. V každé se pro všechny zbylé vrcholy hledá nejbližší hrana (také O(N)), která ale může být pro všechny vrcholy stejná. Poté se k té (alespoň jedné) hraně přidá vrchol, který tak přibude do řešení. Pak se hledá, jetsli nějaký ze zbylých vrcholů je uvnitř výsledného polygonu O(N^2) ... tj celková složitost O(N^3).
+
+
+originální, ale pomalé: 8b8
+Hodnocení pásky - Petr Šťastný
+
+Z popisu a implementace srší pocit, že se opravdu jedná o tvé řešení. S tím ovšem přichází to, že je tam spousta jak drobných, tak větších chyb :)
+
+Jsem přesvědčen o tom, že řešení funguje, ale v nejhorším případě asi trochu hůře, než očekáváš. Prokousat se popisem bylo trochu obtížnější, obrázek by neuškodil.
+
+Analýza složitosti stylem "na začátku se odstraní rychle obrovské množství vstupních bodů" není moc přesná. Co to znamená "rychle" a "obrovské množství bodů"? Takhle ne.
+Buď odhadni složitost shora -- tedy co se stane v nejhorším případě, a odůvodni nějak, že se opravdu jedná o nejhorší případ. Nebo nějak konkretizuj co to je "obrovské", atd. ale tohle často není možné, proto se uchylujeme k analýze nejhoršího možného případu.
+Může se stát, že M=N/2 a H=N/2 ? V tu chvíli je O(MH) = O(N^2) ...
+input.where((p) => p.enabled) má složitost O(N)
+Jelikož se v jedné iteraci přidá alespoň 1 vrchol, tak se může stát nejvíce N iterací. V každé se pro všechny zbylé vrcholy hledá nejbližší hrana (také O(N)), která ale může být pro všechny vrcholy stejná. Poté se k té (alespoň jedné) hraně přidá vrchol, který tak přibude do řešení. Pak se hledá, jetsli nějaký ze zbylých vrcholů je uvnitř výsledného polygonu O(N^2) ... tj celková složitost O(N^3).
+
+
+originální, ale pomalé: 8b8
+Hodnocení pásky - Petr Šťastný
+
+Z popisu a implementace srší pocit, že se opravdu jedná o tvé řešení. S tím ovšem přichází to, že je tam spousta jak drobných, tak větších chyb :)
+
+Jsem přesvědčen o tom, že řešení funguje, ale v nejhorším případě asi trochu hůře, než očekáváš. Prokousat se popisem bylo trochu obtížnější, obrázek by neuškodil.
+
+Analýza složitosti stylem "na začátku se odstraní rychle obrovské množství vstupních bodů" není moc přesná. Co to znamená "rychle" a "obrovské množství bodů"? Takhle ne.
+Buď odhadni složitost shora -- tedy co se stane v nejhorším případě, a odůvodni nějak, že se opravdu jedná o nejhorší případ. Nebo nějak konkretizuj co to je "obrovské", atd. ale tohle často není možné, proto se uchylujeme k analýze nejhoršího možného případu.
+Může se stát, že M=N/2 a H=N/2 ? V tu chvíli je O(MH) = O(N^2) ...
+input.where((p) => p.enabled) má složitost O(N)
+Jelikož se v jedné iteraci přidá alespoň 1 vrchol, tak se může stát nejvíce N iterací. V každé se pro všechny zbylé vrcholy hledá nejbližší hrana (také O(N)), která ale může být pro všechny vrcholy stejná. Poté se k té (alespoň jedné) hraně přidá vrchol, který tak přibude do řešení. Pak se hledá, jetsli nějaký ze zbylých vrcholů je uvnitř výsledného polygonu O(N^2) ... tj celková složitost O(N^3).
+
+
+originální, ale pomalé: 8b8
+Hodnocení pásky - Petr Šťastný
+
+Z popisu a implementace srší pocit, že se opravdu jedná o tvé řešení. S tím ovšem přichází to, že je tam spousta jak drobných, tak větších chyb :)
+
+Jsem přesvědčen o tom, že řešení funguje, ale v nejhorším případě asi trochu hůře, než očekáváš. Prokousat se popisem bylo trochu obtížnější, obrázek by neuškodil.
+
+Analýza složitosti stylem "na začátku se odstraní rychle obrovské množství vstupních bodů" není moc přesná. Co to znamená "rychle" a "obrovské množství bodů"? Takhle ne.
+Buď odhadni složitost shora -- tedy co se stane v nejhorším případě, a odůvodni nějak, že se opravdu jedná o nejhorší případ. Nebo nějak konkretizuj co to je "obrovské", atd. ale tohle často není možné, proto se uchylujeme k analýze nejhoršího možného případu.
+Může se stát, že M=N/2 a H=N/2 ? V tu chvíli je O(MH) = O(N^2) ...
+input.where((p) => p.enabled) má složitost O(N)
+Jelikož se v jedné iteraci přidá alespoň 1 vrchol, tak se může stát nejvíce N iterací. V každé se pro všechny zbylé vrcholy hledá nejbližší hrana (také O(N)), která ale může být pro všechny vrcholy stejná. Poté se k té (alespoň jedné) hraně přidá vrchol, který tak přibude do řešení. Pak se hledá, jetsli nějaký ze zbylých vrcholů je uvnitř výsledného polygonu O(N^2) ... tj celková složitost O(N^3).
+
+
+originální, ale pomalé: 8b8
+Hodnocení pásky - Petr Šťastný
+
+Z popisu a implementace srší pocit, že se opravdu jedná o tvé řešení. S tím ovšem přichází to, že je tam spousta jak drobných, tak větších chyb :)
+
+Jsem přesvědčen o tom, že řešení funguje, ale v nejhorším případě asi trochu hůře, než očekáváš. Prokousat se popisem bylo trochu obtížnější, obrázek by neuškodil.
+
+Analýza složitosti stylem "na začátku se odstraní rychle obrovské množství vstupních bodů" není moc přesná. Co to znamená "rychle" a "obrovské množství bodů"? Takhle ne.
+Buď odhadni složitost shora -- tedy co se stane v nejhorším případě, a odůvodni nějak, že se opravdu jedná o nejhorší případ. Nebo nějak konkretizuj co to je "obrovské", atd. ale tohle často není možné, proto se uchylujeme k analýze nejhoršího možného případu.
+Může se stát, že M=N/2 a H=N/2 ? V tu chvíli je O(MH) = O(N^2) ...
+input.where((p) => p.enabled) má složitost O(N)
+Jelikož se v jedné iteraci přidá alespoň 1 vrchol, tak se může stát nejvíce N iterací. V každé se pro všechny zbylé vrcholy hledá nejbližší hrana (také O(N)), která ale může být pro všechny vrcholy stejná. Poté se k té (alespoň jedné) hraně přidá vrchol, který tak přibude do řešení. Pak se hledá, jetsli nějaký ze zbylých vrcholů je uvnitř výsledného polygonu O(N^2) ... tj celková složitost O(N^3).
+
+
+originální, ale pomalé: 8b8
+Hodnocení pásky - Petr Šťastný
+
+Z popisu a implementace srší pocit, že se opravdu jedná o tvé řešení. S tím ovšem přichází to, že je tam spousta jak drobných, tak větších chyb :)
+
+Jsem přesvědčen o tom, že řešení funguje, ale v nejhorším případě asi trochu hůře, než očekáváš. Prokousat se popisem bylo trochu obtížnější, obrázek by neuškodil.
+
+Analýza složitosti stylem "na začátku se odstraní rychle obrovské množství vstupních bodů" není moc přesná. Co to znamená "rychle" a "obrovské množství bodů"? Takhle ne.
+Buď odhadni složitost shora -- tedy co se stane v nejhorším případě, a odůvodni nějak, že se opravdu jedná o nejhorší případ. Nebo nějak konkretizuj co to je "obrovské", atd. ale tohle často není možné, proto se uchylujeme k analýze nejhoršího možného případu.
+Může se stát, že M=N/2 a H=N/2 ? V tu chvíli je O(MH) = O(N^2) ...
+input.where((p) => p.enabled) má složitost O(N)
+Jelikož se v jedné iteraci přidá alespoň 1 vrchol, tak se může stát nejvíce N iterací. V každé se pro všechny zbylé vrcholy hledá nejbližší hrana (také O(N)), která ale může být pro všechny vrcholy stejná. Poté se k té (alespoň jedné) hraně přidá vrchol, který tak přibude do řešení. Pak se hledá, jetsli nějaký ze zbylých vrcholů je uvnitř výsledného polygonu O(N^2) ... tj celková složitost O(N^3).
+
+
+originální, ale pomalé: 8b8
+Hodnocení pásky - Petr Šťastný
+
+Z popisu a implementace srší pocit, že se opravdu jedná o tvé řešení. S tím ovšem přichází to, že je tam spousta jak drobných, tak větších chyb :)
+
+Jsem přesvědčen o tom, že řešení funguje, ale v nejhorším případě asi trochu hůře, než očekáváš. Prokousat se popisem bylo trochu obtížnější, obrázek by neuškodil.
+
+Analýza složitosti stylem "na začátku se odstraní rychle obrovské množství vstupních bodů" není moc přesná. Co to znamená "rychle" a "obrovské množství bodů"? Takhle ne.
+Buď odhadni složitost shora -- tedy co se stane v nejhorším případě, a odůvodni nějak, že se opravdu jedná o nejhorší případ. Nebo nějak konkretizuj co to je "obrovské", atd. ale tohle často není možné, proto se uchylujeme k analýze nejhoršího možného případu.
+Může se stát, že M=N/2 a H=N/2 ? V tu chvíli je O(MH) = O(N^2) ...
+input.where((p) => p.enabled) má složitost O(N)
+Jelikož se v jedné iteraci přidá alespoň 1 vrchol, tak se může stát nejvíce N iterací. V každé se pro všechny zbylé vrcholy hledá nejbližší hrana (také O(N)), která ale může být pro všechny vrcholy stejná. Poté se k té (alespoň jedné) hraně přidá vrchol, který tak přibude do řešení. Pak se hledá, jetsli nějaký ze zbylých vrcholů je uvnitř výsledného polygonu O(N^2) ... tj celková složitost O(N^3).
+
+
+originální, ale pomalé: 8b
