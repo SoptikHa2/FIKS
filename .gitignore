@@ -10,6 +10,9 @@ Sezona?/Kolo?/*/*.txt
 .packages
 pubspec.lock
 
+# Do not index generated rust files
+Sezona?/Kolo?/*/target
+
 # DO track result.txt, which describes how good was the solution
 !Sezona?/Kolo?/result.txt
 !Sezona?/Kolo?/*/result.txt
