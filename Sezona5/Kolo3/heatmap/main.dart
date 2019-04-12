@@ -136,91 +136,101 @@ class Heatmap {
         }
 
         // Go somewhere else
-        int northValue = _floodfillGet(currentPoint.x, currentPoint.y - 1);
-        int southValue = _floodfillGet(currentPoint.x, currentPoint.y + 1);
-        int westValue = _floodfillGet(currentPoint.x - 1, currentPoint.y);
-        int eastValue = _floodfillGet(currentPoint.x + 1, currentPoint.y);
-        int minimumValue = min_arr_with_ignore([ northValue, southValue, westValue, eastValue ]);
-        bool north = _floodfillGet(currentPoint.x, currentPoint.y - 1) > -1 &&
-            northValue < currentVal && northValue == minimumValue;
-        bool south = _floodfillGet(currentPoint.x, currentPoint.y + 1) > -1 &&
-            southValue < currentVal && southValue == minimumValue;
-        bool west = _floodfillGet(currentPoint.x - 1, currentPoint.y) > -1 &&
-            westValue < currentVal && westValue == minimumValue;
-        bool east = _floodfillGet(currentPoint.x + 1, currentPoint.y) > -1 &&
-             eastValue < currentVal && eastValue == minimumValue;
+        var northPoint = Point.northTo(currentPoint);
+        var southPoint = Point.southTo(currentPoint);
+        var westPoint = Point.westTo(currentPoint);
+        var eastPoint = Point.eastTo(currentPoint);
+
+        int northValue = _floodfillGet(northPoint.x, northPoint.y);
+        int southValue = _floodfillGet(southPoint.x, southPoint.y);
+        int westValue = _floodfillGet(westPoint.x, westPoint.y);
+        int eastValue = _floodfillGet(eastPoint.x, eastPoint.y);
+        int minimumValue =
+            min_arr_with_ignore([northValue, southValue, westValue, eastValue]);
+        bool north = _floodfillGet(northPoint.x, northPoint.y) > -1 &&
+            northValue < currentVal &&
+            northValue == minimumValue;
+        bool south = _floodfillGet(southPoint.x, southPoint.y) > -1 &&
+            southValue < currentVal &&
+            southValue == minimumValue;
+        bool west = _floodfillGet(westPoint.x, westPoint.y) > -1 &&
+            westValue < currentVal &&
+            westValue == minimumValue;
+        bool east = _floodfillGet(eastPoint.x, eastPoint.y) > -1 &&
+            eastValue < currentVal &&
+            eastValue == minimumValue;
 
         // Decide where to go next
         switch (s) {
           case 1:
             if (north) {
-              currentPoint = Point(currentPoint.x, currentPoint.y - 1);
+              currentPoint = northPoint;
               continue;
             }
             if (south) {
-              currentPoint = Point(currentPoint.x, currentPoint.y + 1);
+              currentPoint = southPoint;
               continue;
             }
             if (west) {
-              currentPoint = Point(currentPoint.x - 1, currentPoint.y);
+              currentPoint = westPoint;
               continue;
             }
             if (east) {
-              currentPoint = Point(currentPoint.x + 1, currentPoint.y);
+              currentPoint = eastPoint;
               continue;
             }
             break;
           case 2:
             if (east) {
-              currentPoint = Point(currentPoint.x + 1, currentPoint.y);
+              currentPoint = eastPoint;
               continue;
             }
             if (west) {
-              currentPoint = Point(currentPoint.x - 1, currentPoint.y);
+              currentPoint = westPoint;
               continue;
             }
             if (south) {
-              currentPoint = Point(currentPoint.x, currentPoint.y + 1);
+              currentPoint = southPoint;
               continue;
             }
             if (north) {
-              currentPoint = Point(currentPoint.x, currentPoint.y - 1);
+              currentPoint = northPoint;
               continue;
             }
             break;
           case 3:
             if (west) {
-              currentPoint = Point(currentPoint.x - 1, currentPoint.y);
+              currentPoint = westPoint;
               continue;
             }
             if (north) {
-              currentPoint = Point(currentPoint.x, currentPoint.y - 1);
+              currentPoint = northPoint;
               continue;
             }
             if (south) {
-              currentPoint = Point(currentPoint.x, currentPoint.y + 1);
+              currentPoint = southPoint;
               continue;
             }
             if (east) {
-              currentPoint = Point(currentPoint.x + 1, currentPoint.y);
+              currentPoint = eastPoint;
               continue;
             }
             break;
           case 4:
             if (south) {
-              currentPoint = Point(currentPoint.x, currentPoint.y + 1);
+              currentPoint = southPoint;
               continue;
             }
             if (east) {
-              currentPoint = Point(currentPoint.x + 1, currentPoint.y);
+              currentPoint = eastPoint;
               continue;
             }
             if (north) {
-              currentPoint = Point(currentPoint.x, currentPoint.y - 1);
+              currentPoint = northPoint;
               continue;
             }
             if (west) {
-              currentPoint = Point(currentPoint.x - 1, currentPoint.y);
+              currentPoint = westPoint;
               continue;
             }
             break;
@@ -259,6 +269,22 @@ class Heatmap {
 class Point {
   int x, y;
   Point(this.x, this.y);
+  Point.northTo(Point other) {
+    this.x = other.x;
+    this.y = other.y - 1;
+  }
+  Point.southTo(Point other){
+    this.x = other.x;
+    this.y = other.y + 1;
+  }
+  Point.westTo(Point other){
+    this.x = other.x - 1;
+    this.y = other.y;
+  }
+  Point.eastTo(Point other){
+    this.x = other.x + 1;
+    this.y = other.y;
+  }
 }
 
 num max(num a, num b) => a > b ? a : b;
@@ -266,8 +292,8 @@ num min(num a, num b) => a < b ? a : b;
 num min_arr_with_ignore(List<num> arr) {
   num min = null;
   for (var item in arr) {
-    if(item == -100 || item == -1) continue;
-    if(min == null || item < min) min = item;
+    if (item == -100 || item == -1) continue;
+    if (min == null || item < min) min = item;
   }
   return min;
 }
