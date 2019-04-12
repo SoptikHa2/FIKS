@@ -8,17 +8,17 @@ Základ tedy bude si zprávu rozdělit na jednotlivé "pakety" - úseky, o kter�
 
 *Pozn: funkce zn(N) zaokrouhlí číslo N nahoru.*
 
-Délka paketu bude `2*zn(k/2)`. Tímto vzorcem získám nejbližší vyšší sudé číslo od k - což je nejvzdálenější místo, na kterém ještě nemůže být chyba.
+Délka paketu bude `2*zn(k/2)-1`. Tímto vzorcem získám nejbližší vyšší sudé číslo od k minus jedna - což je druhé nejvzdálenější místo, na kterém ještě nemůže být chyba (proč chci druhé nejvzdálenější místo vysvětlím později).
 
-Jakmile si zprávu pomyslně rozdělíme na pakety, můžeme za každý paket připsat kontrolní bit 0. Tímto pro `m` chybných paketů bude výsledná délka této zprávy n+m.
+Jakmile si zprávu pomyslně rozdělíme na pakety, můžeme za každý paket připsat kontrolní bit 0. Tímto pro `m` chybných paketů bude výsledná délka této zprávy `n+m`.
 
 Co uděláme, pokud bude některý z paketů špatně? Příjemce po každém přijatém paketu pošle dva bity - první, který označuje jestli paket přišel správně, a druhý, který by měl být vždy 0. Odesílatel po přijmutí paketu zkontroluje kontrolní (druhý) bit a případně flipne bit první. Pokud bude první bit 1 (paket přišel s chybou), bude nutné odeslat paket náhradní. (Pozn: pokud by bylo zadané, že zprávy nedorazí okamžitě, nebo nemáme záruku že pakety dorazí ve správném pořadí, je triviální s každým paketem stejným způsobem poslat i identifikační číslo paketu.)
 
 Jak tedy odešleme chybný paket? Prostě ho poslat znova nestačí - může se vloudit další chyba a to by bylo - především při vyšší chybovosti - příliš drahé.
 
-Proto do paketu přidáme další kontrolní bity. Konkrétně tak, že paket rozdělíme na dva menší, tedy s dvěma kontrolnímy bity (dva bity navíc (jeden u odesílatele, druhý u příjemce), které v tomto kroku použijeme, je dle mého při nestabilní síti lepší řešení, než kdybychom museli několikrát posílat celý paket znovu). Pakety pošleme, a zase si je příjemce zkontroluje. Pokud je některá z půlek špatně, opět se to stejným způsobem dozví odesílatel, který opět půlku pokud možno rozdělí na dvě menší a postup se opakuje. Náhradních paketu se při extrémně špatných podmínkách pošle `log(délka_paketu)` (protože v opravném paketu nemohou být dvě chyby).
+Proto do paketu přidáme další kontrolní bity. Konkrétně tak, že paket rozdělíme na dva menší, tedy s dvěma kontrolnímy bity (dva bity navíc (jeden u odesílatele, druhý u příjemce), které v tomto kroku použijeme, je dle mého při nestabilní síti lepší řešení, než kdybychom museli několikrát posílat celý paket znovu). Pakety pošleme, a zase si je příjemce zkontroluje. Pokud je některá z půlek špatně, opět se to stejným způsobem dozví odesílatel, který opět půlku pokud možno rozdělí na dvě menší a postup se opakuje. Náhradních paketu se při extrémně špatných podmínkách pošle `log(délka_paketu)` (protože v opravném paketu nemohou být dvě chyby). Odesílání opravného paketu je důvod, proč je normální paket o jeden bit kratší, než by mohl být. Opravný paket je o jeden bit delší než normální paket, a tedy si musíme být jisti, že v opravném paketu nenastaly dvě chyby.
 
-Ještě chybí jedna drobnost: pokud příjemce zjistí přijetí chybného paketu, musí přirozeně u dalších paketů chybu kompenzovat flipnutím bitů.
+Ještě chybí jedna drobnost: pokud je zjištěna chyba při komunikaci, musíme začít (resp. pro sudý počet chyb přestat) flipovat všechny bity.
 
 ## Zakódování zprávy
 
@@ -97,6 +97,6 @@ Poznámka: protože každá chyba flipuje všechny další bity, budeme muset mo
 
 V každém paketu nebude nikdy chyba více než jedna - díky omezení dle zadáného k. Proto pokud detekujeme kontrolní bit 0, víme, že paket je určitě správny. Pokud 1, požádáme o opravný paket.
 
-Opravný paket je o 1 bit delší, než původní paket, ale také určitě nebude obsahovat dvě chyby. Navíc, pokud se v něm chyba vyskytuje, příjemce urči ve které polovině. Poté uloží tu správnou polovinu (díky kontrolnímu bitu víme, že je určitě bez chyby). Opět požádáme o opravný paket, a pokračujeme dokud nedosáhneme celé zprávy bezchybné.
+Opravný paket je o 1 bit delší, než původní paket, ale také určitě nebude obsahovat dvě chyby. Navíc, pokud se v něm chyba vyskytuje, příjemce urči ve které polovině. Poté uloží tu správnou polovinu (díky kontrolnímu bitu víme, že je určitě bez chyby). Opět požádáme o opravný paket, a pokračujeme dokud nedosáhneme celé zprávy bezchybné. Díky tomuto systému jsme navíc schopni garantovat funkčnost systému i při 100% chybovosti (resp. chyby jsou co nejčastěji je možné).
 
 Petr Šťastný
