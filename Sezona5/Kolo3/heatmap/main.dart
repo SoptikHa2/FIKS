@@ -80,7 +80,7 @@ class Heatmap {
     // Start from end, and go to start
 
     if (_floodfillGet(x1, y1) == -1 || _floodfillGet(x2, y2) == -1) {
-      // Very funny
+      // Invalid input
       return;
     }
 
@@ -136,14 +136,19 @@ class Heatmap {
         }
 
         // Go somewhere else
+        int northValue = _floodfillGet(currentPoint.x, currentPoint.y - 1);
+        int southValue = _floodfillGet(currentPoint.x, currentPoint.y + 1);
+        int westValue = _floodfillGet(currentPoint.x - 1, currentPoint.y);
+        int eastValue = _floodfillGet(currentPoint.x + 1, currentPoint.y);
+        int minimumValue = min_arr_with_ignore([ northValue, southValue, westValue, eastValue ]);
         bool north = _floodfillGet(currentPoint.x, currentPoint.y - 1) > -1 &&
-            _floodfillGet(currentPoint.x, currentPoint.y - 1) < currentVal;
+            northValue < currentVal && northValue == minimumValue;
         bool south = _floodfillGet(currentPoint.x, currentPoint.y + 1) > -1 &&
-            _floodfillGet(currentPoint.x, currentPoint.y + 1) < currentVal;
+            southValue < currentVal && southValue == minimumValue;
         bool west = _floodfillGet(currentPoint.x - 1, currentPoint.y) > -1 &&
-            _floodfillGet(currentPoint.x - 1, currentPoint.y) < currentVal;
+            westValue < currentVal && westValue == minimumValue;
         bool east = _floodfillGet(currentPoint.x + 1, currentPoint.y) > -1 &&
-            _floodfillGet(currentPoint.x + 1, currentPoint.y) < currentVal;
+             eastValue < currentVal && eastValue == minimumValue;
 
         // Decide where to go next
         switch (s) {
@@ -221,7 +226,7 @@ class Heatmap {
             break;
         }
 
-        // This should never happen
+        // This should never happen with valid input
         break;
       }
     }
@@ -257,3 +262,12 @@ class Point {
 }
 
 num max(num a, num b) => a > b ? a : b;
+num min(num a, num b) => a < b ? a : b;
+num min_arr_with_ignore(List<num> arr) {
+  num min = null;
+  for (var item in arr) {
+    if(item == -100 || item == -1) continue;
+    if(min == null || item < min) min = item;
+  }
+  return min;
+}
