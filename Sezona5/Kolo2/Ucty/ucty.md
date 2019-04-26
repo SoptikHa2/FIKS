@@ -9,6 +9,7 @@ Například tento vstup:
 1 1 1
 ```
 přepíšeme následovně:
+
 |   |   |   |
 |---|---|---|
 |   |   |4  |
