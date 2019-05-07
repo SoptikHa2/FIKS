@@ -16,6 +16,12 @@ Sezona?/Kolo?/*/target
 # Do not index cargo lock files
 Cargo.lock
 
+# Do not index c# build files
+bin
+obj
+Properties
+App.config
+
 # DO track result.txt, which describes how good was the solution
 !Sezona?/Kolo?/result.txt
 !Sezona?/Kolo?/*/result.txt
