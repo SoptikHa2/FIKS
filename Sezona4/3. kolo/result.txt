@@ -1,0 +1,16 @@
+1	Mapa
+2	Obsidianove runy
+3	Kraj pro elfky
+4	Magicke formule #3
+5	Prohozeni vezi
+
+1	10
+2	10
+3	3.5
+4
+5	5
+
+Celkem	28.5
+Vcetne predchozich	69
+
+Pozice 15

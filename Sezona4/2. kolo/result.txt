@@ -1,0 +1,16 @@
+1	Knihovna
+2	Ranni telocvik
+3	Cemositove krystaly
+4	Teleportace
+5	Magicke formule #2
+
+1	5
+2	6
+3	8
+4
+5
+
+Celkem	19
+Vcetne predchozich	40.5
+
+Pozice 16

@@ -1,0 +1,16 @@
+1	Silueta mesta
+2	Zbojnici
+3	Magicke formule #1
+4	Mocal
+5	Vstupni zkouska
+
+1	7
+2	3
+3
+4	10
+5	1.5
+
+Celkem	21.5
+Vcetne predchozich	21.5
+
+Pozice 19
