@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Knihovna", "Knihovna\Knihovna.csproj", "{76EDB8C5-1DB7-4D33-80DC-1925EC6B2C6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnihovnaUnitTests", "KnihovnaUnitTests\KnihovnaUnitTests.csproj", "{DE3B507B-1808-46F9-B170-06129FAC217D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{76EDB8C5-1DB7-4D33-80DC-1925EC6B2C6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76EDB8C5-1DB7-4D33-80DC-1925EC6B2C6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76EDB8C5-1DB7-4D33-80DC-1925EC6B2C6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76EDB8C5-1DB7-4D33-80DC-1925EC6B2C6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE3B507B-1808-46F9-B170-06129FAC217D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE3B507B-1808-46F9-B170-06129FAC217D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE3B507B-1808-46F9-B170-06129FAC217D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE3B507B-1808-46F9-B170-06129FAC217D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {36153C65-0B10-4233-AE85-815AFA5A7142}
+	EndGlobalSection
+EndGlobal

@@ -22,6 +22,7 @@ obj
 Properties
 App.config
 packages
+.vs
 
 # DO track result.txt, which describes how good was the solution
 !Sezona?/Kolo?/result.txt

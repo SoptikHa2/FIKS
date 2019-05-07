@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vstupni zkouska", "Vstupni zkouska\Vstupni zkouska.csproj", "{4D4F41F8-7E4B-4666-AAE7-B491C333F6D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VstupniZkouskaTest", "VstupniZkouskaTest\VstupniZkouskaTest.csproj", "{84BCB736-B153-4187-B758-C8755FE3718B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D4F41F8-7E4B-4666-AAE7-B491C333F6D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D4F41F8-7E4B-4666-AAE7-B491C333F6D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D4F41F8-7E4B-4666-AAE7-B491C333F6D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D4F41F8-7E4B-4666-AAE7-B491C333F6D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84BCB736-B153-4187-B758-C8755FE3718B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84BCB736-B153-4187-B758-C8755FE3718B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84BCB736-B153-4187-B758-C8755FE3718B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84BCB736-B153-4187-B758-C8755FE3718B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BCA44F18-2298-426D-A02E-DA60B43B51CE}
+	EndGlobalSection
+EndGlobal
