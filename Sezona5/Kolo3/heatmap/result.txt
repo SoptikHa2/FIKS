@@ -1,0 +1,11 @@
+9
+
+Řešení je správné, ovšem detaily jsou ponechány na naší představivosti.
+
+Tvrzení "Bude to trvat až kvadraticky dlouho." by mělo být vztaženo k nějakému parametru -- kvadraticky dlouho znamená O(R^2), ale co vystihuje R?
+
+    // Decide where to go next
+    switch (s) {
+        ...
+    }
+Switch přes 60 řádků by šel značně zjednodušit, kdybychom si preference pamatovali stranou (2d pole) a použili je pro rozhodnutí.

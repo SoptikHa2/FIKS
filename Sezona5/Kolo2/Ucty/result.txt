@@ -1,0 +1,12 @@
+2
+
+Proč tento postup opravdu vede k optimálním přesunům prostředků?
+Nemusí se vždy vyplatit přesouvat prostředky na účet s nejvýhodnějším
+poplatkem.
+Viz např. vstup:
+3 7
+5 3 1
+1 1 1
+2 1 2
+Složitost O(n*m) je příliš velká a pro mezní vstupy program zcela zajisté
+nedoběhne v rozumném čase.

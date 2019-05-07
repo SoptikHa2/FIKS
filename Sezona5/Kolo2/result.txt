@@ -1,0 +1,16 @@
+1	Srovnani uctu
+2	Ksurb
+3	Mezimestska doprava
+4	Hlidky
+5	Cenzori
+
+1	2
+2	9
+3	1
+4	7
+5	0
+
+Celkem 19
+Vcetne predchozich	64
+
+Pozice 10

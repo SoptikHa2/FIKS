@@ -1,0 +1,3 @@
+4
+
+Cenzorky implementovaly tvůj algoritmus během hodiny, ale nevěděly, jak naimplemntovat vyžádání znovuodeslání chybové zprávy. Tohoto se ujmuli další odbojáři a tvůj protokol doladili. Při testování protokolu se zjistilo , že linka je velice chybová a hodnota K je přibližně 100. Kódování nefunguje moc dobře, protože chyby se vyskytují i při odeslání požadavku o znovuodeslání, a takové chyby už protokol opravit neumí.
